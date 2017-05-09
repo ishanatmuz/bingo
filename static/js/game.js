@@ -92,6 +92,10 @@ var Game = {
             }
         });
         
+        this.data.socket.on('result', function(result) {
+            self.data.state.runningStatus = result;
+        });
+        
         Input.init(this.data);
         Renderer.init(this.data);
         Game.run(this.data);

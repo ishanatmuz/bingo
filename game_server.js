@@ -126,6 +126,7 @@ gameServer.getResult = function() {
     hostWin = !_.isUndefined(hostWin);
     
     if (hostWin === true) {
+        gameServer.announceResult('host_won');
         return 'host_won';
     }
     
@@ -135,14 +136,21 @@ gameServer.getResult = function() {
     });
     clientWin = !_.isUndefined(clientWin);
     if (clientWin === true) {
+        gameServer.announceResult('client_won');
         return 'client_won';
     }
     
     // Check for draw
     if ((gameServer.game.input.client.length + gameServer.game.input.host.length) === 9) {
+        gameServer.announceResult('draw');
         return 'draw';
     }
     
     // Game is still going on
     return 'ready';
+};
+
+gameServer.announceResult = function(result) {
+    gameServer.game.client.emit('result', result);
+    gameServer.game.host.emit('result', result);
 };
