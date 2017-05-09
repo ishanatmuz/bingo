@@ -42,9 +42,9 @@ var Renderer = {
         if (data.state.runningStatus === 'draw') {
             self.drawDrawMessage(data);
         } else if (data.state.runningStatus === 'host_won') {
-            self.drawWinOrLoose(data.state.type === 'host');
+            self.drawWinOrLoose(data, data.state.type === 'host');
         } else if(data.state.runningStatus === 'client_won') {
-            self.drawWinOrLoose(data.state.type === 'client');
+            self.drawWinOrLoose(data, data.state.type === 'client');
         } else {
             if ((data.state.turn === false) || (data.state.runningStatus === 'waiting')) {
                 self.drawPauseWarning(data);
@@ -71,12 +71,27 @@ var Renderer = {
         data.ctx.strokeText('Waiting for opponent', 10, 150);
     },
     
-    drawWinOrLoose: function(win) {
+    drawWinOrLoose: function(data, win) {
         console.log('draw win or loose');
         console.log(win);
+        data.ctx.clearRect(0, 0, data.canvas.width, data.canvas.height);
+        data.bgCtx.clearRect(0, 0, data.bgCanvas.width, data.bgCanvas.height);
+        if (win) {
+            console.log('win case');
+            data.ctx.font = '30px serif';
+            data.ctx.strokeText('You Won', 100, 150);
+        } else {
+            console.log('loose case');
+            data.ctx.font = '30px serif';
+            data.ctx.strokeText('You Lost', 100, 150);
+        }
     },
     
-    drawDrawMessage: function() {
+    drawDrawMessage: function(data) {
         console.log('drawDrawMessage');
+        data.ctx.clearRect(0, 0, data.canvas.width, data.canvas.height);
+        data.bgCtx.clearRect(0, 0, data.bgCanvas.width, data.bgCanvas.height);
+        data.ctx.font = '30px serif';
+        data.ctx.strokeText('Match Draw', 100, 150);
     }
 };
