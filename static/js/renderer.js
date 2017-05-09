@@ -39,8 +39,16 @@ var Renderer = {
             }
         });
         
-        if ((data.state.turn === false) || (data.state.runningStatus === 'waiting')) {
-            self.drawPauseWarning(data);
+        if (data.state.runningStatus === 'draw') {
+            self.drawDrawMessage(data);
+        } else if (data.state.runningStatus === 'host_won') {
+            self.drawWinOrLoose(data.state.type === 'host');
+        } else if(data.state.runningStatus === 'client_won') {
+            self.drawWinOrLoose(data.state.type === 'client');
+        } else {
+            if ((data.state.turn === false) || (data.state.runningStatus === 'waiting')) {
+                self.drawPauseWarning(data);
+            }
         }
     },
     
@@ -61,5 +69,14 @@ var Renderer = {
     drawPauseWarning: function(data) {
         data.ctx.font = '30px serif';
         data.ctx.strokeText('Waiting for opponent', 10, 150);
+    },
+    
+    drawWinOrLoose: function(win) {
+        console.log('draw win or loose');
+        console.log(win);
+    },
+    
+    drawDrawMessage: function() {
+        console.log('drawDrawMessage');
     }
 };

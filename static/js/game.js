@@ -47,9 +47,7 @@ var Game = {
                 me: [],
                 opponent: [],
             },
-            result: {               // not used untill yet, plan to use it to store game running state, maybe I will change it
-                state: 'loading'
-            }
+            runningStatus: null
         };
         
         // Connect to server for registering player
@@ -79,17 +77,19 @@ var Game = {
             console.log(data);
             // TODO Hang the game, show disconnect message, Show a button for refresh to start a new game
             alert('The other player disconnected');
-            window.location.reload();
+            window.location.reload(true);
         });
         
-        this.data.socket.on('opponent_input', function(opponentCell) {
+        this.data.socket.on('opponent_input', function(serverData) {
             // TODO Store the opponent input
             console.log('opponent input received');
-            console.log(opponentCell);
-            self.data.state.input.opponent.push(opponentCell);
+            self.data.state.input.opponent.push(serverData.input);
             
-            // Setting player's turn to true
-            self.data.state.turn = true;
+            self.data.state.runningStatus = serverData.result;
+            if (serverData.result === 'ready') {
+                // Setting player's turn to true
+                self.data.state.turn = true;
+            }
         });
         
         Input.init(this.data);
