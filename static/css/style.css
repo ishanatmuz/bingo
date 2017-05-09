@@ -1,0 +1,30 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #f7f7f7;
+}
+
+canvas {
+    display: block;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 1px solid #212121;
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+}
+
+.credits {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}

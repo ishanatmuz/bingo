@@ -1,0 +1,23 @@
+{
+  "name": "tic-tac-toe",
+  "version": "0.0.1",
+  "description": "A multiplayer html5 canvas based tic tac toe",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tic-tac-toe",
+    "canvas",
+    "html5",
+    "multi-player"
+  ],
+  "author": "Ishan <ishanatmuzaffarpur@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^2.0.1",
+    "underscore": "^1.8.3",
+    "uuid": "^3.0.1"
+  }
+}
