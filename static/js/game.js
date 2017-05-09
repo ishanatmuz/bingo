@@ -72,12 +72,16 @@ var Game = {
             self.data.state.runningStatus = 'ready';
         });
         
-        this.data.socket.on('opponent_disconnected', function(data) {
+        this.data.socket.on('opponent_disconnected', function() {
             console.log('opponent disconnected');
-            console.log(data);
             // TODO Hang the game, show disconnect message, Show a button for refresh to start a new game
             alert('The other player disconnected');
-            window.location.reload(true);
+            // Initializing new game by clearing old data
+            self.data.state.input = {
+                me: [],
+                opponent: [],
+            };
+            self.data.state.runningStatus = 'waiting';
         });
         
         this.data.socket.on('opponent_input', function(serverData) {

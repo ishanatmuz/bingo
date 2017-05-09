@@ -75,7 +75,6 @@ var Renderer = {
         console.log('draw win or loose');
         console.log(win);
         data.ctx.clearRect(0, 0, data.canvas.width, data.canvas.height);
-        data.bgCtx.clearRect(0, 0, data.bgCanvas.width, data.bgCanvas.height);
         if (win) {
             console.log('win case');
             data.ctx.font = '30px serif';
@@ -90,7 +89,6 @@ var Renderer = {
     drawDrawMessage: function(data) {
         console.log('drawDrawMessage');
         data.ctx.clearRect(0, 0, data.canvas.width, data.canvas.height);
-        data.bgCtx.clearRect(0, 0, data.bgCanvas.width, data.bgCanvas.height);
         data.ctx.font = '30px serif';
         data.ctx.strokeText('Match Draw', 100, 150);
     }
