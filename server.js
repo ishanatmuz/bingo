@@ -32,7 +32,8 @@ sio.on('connection', function(client) {
     // Send the client their information
     client.emit('onconnected', {
         id: client.userid,
-        type: client.type
+        type: client.type,
+        status: result.status
     });
     
     // When client disconnects, remove the client and end the game emitting an end-game message

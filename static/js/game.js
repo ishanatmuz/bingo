@@ -60,11 +60,18 @@ var Game = {
             console.log(data);
             // TODO: Initialize player type, i.e. set X or O
             self.data.state.type = data.type;
+            self.data.state.runningStatus = data.status;
+            console.log(data.status);
             if (data.type === 'client') {
                 self.data.state.turn = false;
             } else if (data.type === 'host') {
-                self.data.state.turn = 'true';
+                self.data.state.turn = true;
             }
+        });
+        
+        this.data.socket.on('opponent_connected', function() {
+            console.log('opponent connected message');
+            self.data.state.runningStatus = 'ready';
         });
         
         this.data.socket.on('opponent_disconnected', function(data) {

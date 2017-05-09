@@ -39,7 +39,7 @@ var Renderer = {
             }
         });
         
-        if (data.state.turn === false) {
+        if ((data.state.turn === false) || (data.state.runningStatus === 'waiting')) {
             self.drawPauseWarning(data);
         }
     },

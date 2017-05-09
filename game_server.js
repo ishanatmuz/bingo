@@ -7,6 +7,12 @@ gameServer.insertClient = function(player) {
     if (!_.has(gameServer.game, 'host')) {
         gameServer.game.host = player;
         var status = gameServer.startGame();
+        
+        // Sending opponent connected message to the client
+        if (_.has(gameServer.game, 'client')) {
+            gameServer.game.client.emit('opponent_connected');
+        }
+        
         return {
             type: 'host',
             status: status
@@ -16,6 +22,12 @@ gameServer.insertClient = function(player) {
     if (!_.has(gameServer.game, 'client')) {
         gameServer.game.client = player;
         var status = gameServer.startGame();
+        
+        // Sending opponent connected message to the host
+        if (_.has(gameServer.game, 'host')) {
+            gameServer.game.host.emit('opponent_connected');
+        }
+        
         return {
             type: 'client',
             status: status

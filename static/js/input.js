@@ -4,7 +4,9 @@ var Input = {
         // Setup mouse click listener
         var self = this;
         data.canvas.addEventListener('click', function (event) {
-            self.mouseClick(data, event);
+            if (data.state.turn === true) {
+                self.mouseClick(data, event);
+            }
         });
     },
     
