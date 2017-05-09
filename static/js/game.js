@@ -78,6 +78,8 @@ var Game = {
             console.log('opponent disconnected');
             console.log(data);
             // TODO Hang the game, show disconnect message, Show a button for refresh to start a new game
+            alert('The other player disconnected');
+            window.location.reload();
         });
         
         this.data.socket.on('opponent_input', function(opponentCell) {
