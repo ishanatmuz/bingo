@@ -15,12 +15,12 @@ var Renderer = {
     },
     
     update: function(data) {
+        var self = this;
         // Used to re-draw things
         // TODO clear Canvas
         data.ctx.clearRect(0, 0, data.canvas.width, data.canvas.height);
         
         // TODO: Draw the canvas based on the information of data.state
-        var self = this;
         _.each(data.state.input.me, function(cell) {
             // TODO Draw X or O based on player type
             if (data.state.type === 'client') {
@@ -38,6 +38,10 @@ var Renderer = {
                 self.drawCircle(data, cell);
             }
         });
+        
+        if (data.state.turn === false) {
+            self.drawPauseWarning(data);
+        }
     },
     
     drawCross: function(data, cell) {
@@ -52,5 +56,10 @@ var Renderer = {
         var xJson = data.spritesheet.json.frames['o.png'].frame;
         ctx.drawImage(data.spritesheet.img, xJson.x, xJson.y, xJson.w, xJson.h, 
                      cell.x * 100, cell.y * 100, 100, 100);
+    },
+    
+    drawPauseWarning: function(data) {
+        data.ctx.font = '30px serif';
+        data.ctx.strokeText('Waiting for opponent', 10, 150);
     }
 };

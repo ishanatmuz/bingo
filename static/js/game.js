@@ -47,7 +47,7 @@ var Game = {
                 me: [],
                 opponent: [],
             },
-            result: {
+            result: {               // not used untill yet, plan to use it to store game running state, maybe I will change it
                 state: 'loading'
             }
         };
@@ -60,6 +60,11 @@ var Game = {
             console.log(data);
             // TODO: Initialize player type, i.e. set X or O
             self.data.state.type = data.type;
+            if (data.type === 'client') {
+                self.data.state.turn = false;
+            } else if (data.type === 'host') {
+                self.data.state.turn = 'true';
+            }
         });
         
         this.data.socket.on('opponent_disconnected', function(data) {
@@ -73,6 +78,9 @@ var Game = {
             console.log('opponent input received');
             console.log(opponentCell);
             self.data.state.input.opponent.push(opponentCell);
+            
+            // Setting player's turn to true
+            self.data.state.turn = true;
         });
         
         Input.init(this.data);
@@ -100,8 +108,8 @@ var Game = {
     
     update: function(data) {
         // Game update Physics, Gameinfo etc...
-        // If user has clicked on a new cell
-        if (data.clickedCell) {
+        // If user has clicked on a new cell and it is the user's turn
+        if (data.clickedCell && data.state.turn) {
             // Check if cell is already clicked
             var result = _.find(data.state.input.me.concat(data.state.input.opponent), function(cell) {
                 return cell.x === data.clickedCell.x && cell.y === data.clickedCell.y;
@@ -110,6 +118,9 @@ var Game = {
             // Storing clicked cell information
             if (_.isUndefined(result)) {
                 data.state.input.me.push(data.clickedCell);
+                
+                // Setting turn to false
+                data.state.turn = false;
                 
                 // Sending input information to server
                 data.socket.emit('player_input', data.clickedCell);
