@@ -51,7 +51,7 @@ var Input = {
     },
     
     getClickedCell: function(data, event) {
-        var cellWidth = (300 / data.numRows);
+        var cellWidth = (data.canvas.width / data.numRows);
         var position = this.getPointerPosition(data, event);
         position.x = Math.floor(position.x / cellWidth);
         position.y = Math.floor(position.y / cellWidth);
