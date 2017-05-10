@@ -1,17 +1,6 @@
 var Renderer = {
     init: function(data) {
         // Used to draw one time things
-//        var bgCtx = data.bgCtx;
-//        bgCtx.beginPath();
-//        bgCtx.moveTo(100, 0);
-//        bgCtx.lineTo(100, 300);
-//        bgCtx.moveTo(200, 0);
-//        bgCtx.lineTo(200, 300);
-//        bgCtx.moveTo(0, 100);
-//        bgCtx.lineTo(300, 100);
-//        bgCtx.moveTo(0, 200);
-//        bgCtx.lineTo(300, 200);
-//        bgCtx.stroke();
     },
     
     update: function(data) {
@@ -113,43 +102,48 @@ var Renderer = {
     },
     
     drawGrid: function(data) {
+        var canvasWidth = data.canvas.width;
+        var cellWidth = (canvasWidth / data.numRows);
         for (var i = 0; i < data.numRows; i++) {
             // Vertical line
             data.ctx.beginPath();
-            data.ctx.moveTo((300 / data.numRows) * (i + 1), 0);
-            data.ctx.lineTo((300 / data.numRows) * (i + 1), 300);
+            data.ctx.moveTo(cellWidth * (i + 1), 0);
+            data.ctx.lineTo(cellWidth * (i + 1), canvasWidth);
             data.ctx.stroke();
             
             // Horizontal line
             data.ctx.beginPath();
-            data.ctx.moveTo(0, (300 / data.numRows) * (i + 1));
-            data.ctx.lineTo(300, (300 / data.numRows) * (i + 1));
+            data.ctx.moveTo(0, cellWidth * (i + 1));
+            data.ctx.lineTo(canvasWidth, cellWidth * (i + 1));
             data.ctx.stroke();
             
         }
     },
     
     drawNumber: function(data, number, x, y) {
+        var canvasWidth = data.canvas.width;
+        var cellWidth = (canvasWidth / data.numRows);
         data.ctx.font = '40px serif';
         var xOffset = 10;
         if (number < 10) {
             xOffset = 20;
         }
-        data.ctx.fillText('' + number, (y * 60) + xOffset, ((x + 1) * 60) - 15);
+        data.ctx.fillText('' + number, (y * cellWidth) + xOffset, ((x + 1) * cellWidth) - 15);
     },
     
     drawCross: function(data, x, y) {
-        var width = (300 / data.numRows);
+        var canvasWidth = data.canvas.width;
+        var cellWidth = (canvasWidth / data.numRows);
         // Diagonal 1
         data.ctx.beginPath();
-        data.ctx.moveTo(width * y, width * x);
-        data.ctx.lineTo(width * (y + 1), width * (x + 1));
+        data.ctx.moveTo(cellWidth * y, cellWidth * x);
+        data.ctx.lineTo(cellWidth * (y + 1), cellWidth * (x + 1));
         data.ctx.stroke();
         
         // Diagonal 2
         data.ctx.beginPath();
-        data.ctx.moveTo(width * y, width * (x + 1));
-        data.ctx.lineTo(width * (y + 1), width * x);
+        data.ctx.moveTo(cellWidth * y, cellWidth * (x + 1));
+        data.ctx.lineTo(cellWidth * (y + 1), cellWidth * x);
         data.ctx.stroke();
     }
 };
