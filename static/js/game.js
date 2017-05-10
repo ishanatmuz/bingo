@@ -50,67 +50,9 @@ var Game = {
             runningStatus: null
         };
         
-        // Connect to server for registering player
-        this.data.socket = io.connect('/');
         
-        this.data.socket.on('onconnected', function(data) {
-            console.log('socket io connected');
-            console.log(data);
-            // TODO: Initialize player type, i.e. set X or O
-            self.data.state.type = data.type;
-            self.data.state.runningStatus = data.status;
-            console.log(data.status);
-            if (data.type === 'client') {
-                self.data.state.turn = false;
-            } else if (data.type === 'host') {
-                self.data.state.turn = true;
-            }
-        });
         
-        this.data.socket.on('opponent_connected', function() {
-            console.log('opponent connected message');
-            // Initializing new game by clearing old data
-            self.data.state.input = {
-                me: [],
-                opponent: [],
-            };
-            self.data.state.runningStatus = 'ready';
-            console.log(self.data.state.type);
-            if (self.data.state.type === 'host') {
-                self.data.state.turn = true;
-            } else if (self.data.state.type === 'client') {
-                self.data.state.turn = false;
-            }
-        });
-        
-        this.data.socket.on('opponent_disconnected', function() {
-            console.log('opponent disconnected');
-            // TODO Hang the game, show disconnect message, Show a button for refresh to start a new game
-            alert('The other player disconnected');
-            // Initializing new game by clearing old data
-            self.data.state.input = {
-                me: [],
-                opponent: [],
-            };
-            self.data.state.runningStatus = 'waiting';
-        });
-        
-        this.data.socket.on('opponent_input', function(serverData) {
-            // TODO Store the opponent input
-            console.log('opponent input received');
-            self.data.state.input.opponent.push(serverData.input);
-            
-            self.data.state.runningStatus = serverData.result;
-            if (serverData.result === 'ready') {
-                // Setting player's turn to true
-                self.data.state.turn = true;
-            }
-        });
-        
-        this.data.socket.on('result', function(result) {
-            self.data.state.runningStatus = result;
-        });
-        
+        GameSocket.init(this.data);
         Input.init(this.data);
         Renderer.init(this.data);
         Game.run(this.data);
