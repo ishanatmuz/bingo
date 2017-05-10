@@ -4,20 +4,10 @@ var Game = {
         this.data = {};
         this.data.canvas = document.getElementById('main-canvas');
         this.data.ctx = this.data.canvas.getContext('2d');
-        this.data.bgCanvas = document.getElementById('background-canvas');
-        this.data.bgCtx = this.data.bgCanvas.getContext('2d');
         
         // Loading resources
         this.queue = new createjs.LoadQueue();
         this.queue.on("complete", this.loadComplete, this);
-        this.queue.loadFile({
-            id: 'spritesheet_img',
-            src: '/static/img/spritesheet.png'
-        });
-        this.queue.loadFile({
-            id: 'spritesheet_json',
-            src: '/static/img/spritesheet.json'
-        });
         this.queue.loadFile({
             id: 'theme',
             src: '/static/audio/bensound-relaxing.mp3'
@@ -27,10 +17,6 @@ var Game = {
     loadComplete: function() {
         var self = this;
         // Preparing loaded resources
-        this.data.spritesheet = {
-            img: this.queue.getResult('spritesheet_img'),
-            json: this.queue.getResult('spritesheet_json')
-        };
         this.data.theme = this.queue.getResult('theme');
         this.data.theme.loop = true;
         
@@ -38,16 +24,15 @@ var Game = {
         this.data.theme.play();
         
         // Initializing game
-        this.data.cellHeight = 100;
-        this.data.cellWidth = 100;
+        this.data.cellHeight = 60;
+        this.data.cellWidth = 60;
         this.data.animationFrame = 0;
         this.data.state = {
-            type: null,
-            input: {
-                me: [],
-                opponent: [],
-            },
-            runningStatus: null
+            numRows: 5,
+            playerType: null,
+            selections: [],
+            board: [],
+            state: {}
         };
         
         
