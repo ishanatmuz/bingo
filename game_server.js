@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var gameServer = module.exports = {};
 
-var numRows = 10;
+var numRows = 8;
 var winningCombinations = [];
 
 gameServer.game = gameServer.game || {};

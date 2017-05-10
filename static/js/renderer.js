@@ -157,7 +157,7 @@ var Renderer = {
         var canvasWidth = data.canvas.width;
         data.ctx.font = '48px serif';
         data.ctx.fillStyle = 'red';
-        data.ctx.fillText('Waiting', (canvasWidth / 5), ((canvasWidth / 2) + (canvasWidth / 10)));
+        data.ctx.fillText('Waiting', (canvasWidth / 4), ((canvasWidth / 2) + (canvasWidth / 10)));
         data.ctx.fillStyle = 'black';
     }
 };
