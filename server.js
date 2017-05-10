@@ -26,32 +26,50 @@ sio.on('connection', function(client) {
     // Generate and allot a new UUID to client
     client.userid = UUID();
     
+    // Insert the player
     var result = gameServer.insertClient(client);
     client.type = result.type;
     
-    // Send the client their information
+    // Send the player their information
     client.emit('onconnected', {
         id: client.userid,
         type: client.type,
-        status: result.status
     });
     
-    // When client disconnects, remove the client and end the game emitting an end-game message
+    // Initialize the game
+    gameServer.initializeGame();
+    
+    // Broadcast game
+    gameServer.broadcastGame();
+    
+    // When player disconnects
     client.on('disconnect', function() {
+        // Remove the client
         gameServer.removeClient(client);
-        if (client.type === 'host') {
-            if (_.has(gameServer.game, 'client')) {
-                gameServer.game.client.emit('opponent_disconnected');
-            }
-        } else {
-            if (_.has(gameServer.game, 'host')) {
-                gameServer.game.host.emit('opponent_disconnected');
-            }
-        }
+
+        // End the game
+        gameServer.endGame();
+        
+        // Broadcast game
+        gameServer.broadcastGame();
+        
+    });
+    
+    // When player intends to start game
+    client.on('start', function() {
+        // Start game by player
+        gameServer.startGame(client);
+        
+        // Broadcast game
+        gameServer.broadcastGame();
     });
     
     // When player clicks on a cell
     client.on('player_input', function(data) {
+        // Store player input
         gameServer.playerInput(client, data);
+        
+        // Brodcast game
+        gameServer.broadcastGame();
     });
 });
