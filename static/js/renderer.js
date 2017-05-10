@@ -50,6 +50,12 @@ var Renderer = {
             this.drawCanvas(data);
         }
         
+        // Waiting for other player to move
+        if (((data.state.msg === 'host_turn') && (data.playerType !== 'host')) || 
+            ((data.state.msg === 'client_turn') && (data.playerType !== 'client'))) {
+            this.drawWaiting(data);
+        }
+        
         // Match result
         if (data.state.msg === 'host_won') {
             data.waiting.classList.add('hide');
@@ -145,5 +151,13 @@ var Renderer = {
         data.ctx.moveTo(cellWidth * y, cellWidth * (x + 1));
         data.ctx.lineTo(cellWidth * (y + 1), cellWidth * x);
         data.ctx.stroke();
+    },
+    
+    drawWaiting: function(data) {
+        var canvasWidth = data.canvas.width;
+        data.ctx.font = '48px serif';
+        data.ctx.fillStyle = 'red';
+        data.ctx.fillText('Waiting', (canvasWidth / 5), ((canvasWidth / 2) + (canvasWidth / 10)));
+        data.ctx.fillStyle = 'black';
     }
 };
