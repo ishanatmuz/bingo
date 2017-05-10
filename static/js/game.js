@@ -69,7 +69,18 @@ var Game = {
         
         this.data.socket.on('opponent_connected', function() {
             console.log('opponent connected message');
+            // Initializing new game by clearing old data
+            self.data.state.input = {
+                me: [],
+                opponent: [],
+            };
             self.data.state.runningStatus = 'ready';
+            console.log(self.data.state.type);
+            if (self.data.state.type === 'host') {
+                self.data.state.turn = true;
+            } else if (self.data.state.type === 'client') {
+                self.data.state.turn = false;
+            }
         });
         
         this.data.socket.on('opponent_disconnected', function() {

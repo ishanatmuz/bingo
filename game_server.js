@@ -22,6 +22,7 @@ gameServer.insertClient = function(player) {
         // Sending opponent connected message to the client
         if (_.has(gameServer.game, 'client')) {
             gameServer.game.client.emit('opponent_connected');
+            gameServer.startGame();
         }
         
         return {
@@ -37,6 +38,7 @@ gameServer.insertClient = function(player) {
         // Sending opponent connected message to the host
         if (_.has(gameServer.game, 'host')) {
             gameServer.game.host.emit('opponent_connected');
+            gameServer.startGame();
         }
         
         return {
@@ -68,7 +70,7 @@ gameServer.startGame = function() {
 };
 
 gameServer.initializeGame = function() {
-    gameServer.game.score = 0;
+    // gameServer.game.score = 0;
     gameServer.game.input = {};
     gameServer.game.input.host = [];
     gameServer.game.input.client = [];
@@ -76,6 +78,7 @@ gameServer.initializeGame = function() {
 
 gameServer.endGame = function() {
     console.log('Game ended, send the other user game status');
+    gameServer.initializeGame();
 };
 
 gameServer.playerInput = function(player, inputCell) {
