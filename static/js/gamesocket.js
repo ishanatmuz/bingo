@@ -28,5 +28,9 @@ var GameSocket = {
     
     requestNewGame: function(data) {
         data.socket.emit('new-game');
+    },
+    
+    sendSelection: function(data, number) {
+        data.socket.emit('player_input', number);
     }
 };

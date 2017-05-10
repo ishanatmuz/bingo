@@ -65,9 +65,9 @@ sio.on('connection', function(client) {
     });
     
     // When player clicks on a cell
-    client.on('player_input', function(data) {
+    client.on('player_input', function(number) {
         // Store player input
-        gameServer.playerInput(client, data);
+        gameServer.playerInput(client, number);
         
         // Brodcast game
         gameServer.broadcastGame();

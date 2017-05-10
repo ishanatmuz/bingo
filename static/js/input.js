@@ -4,7 +4,8 @@ var Input = {
         // Setup mouse click listener
         var self = this;
         data.canvas.addEventListener('click', function (event) {
-            if (data.state.turn === true) {
+            if (((data.playerType === 'host') && (data.state.msg === 'host_turn')) ||
+                ((data.playerType === 'client') && (data.state.msg === 'client_turn'))) {
                 self.mouseClick(data, event);
             }
         });
@@ -24,8 +25,8 @@ var Input = {
     },
     
     mouseClick: function(data, event) {
-        data.clickedCell = this.getClickedCell(data, event);
-//        console.log('Clicked: cell [' + data.clickedCell.x + ', ' + data.clickedCell.y + ']');
+        var clickedCell = this.getClickedCell(data, event);
+        GameSocket.sendSelection(data, data.board[clickedCell.y][clickedCell.x]);
     },
     
     getPointerPosition: function(data, event) {
@@ -50,9 +51,10 @@ var Input = {
     },
     
     getClickedCell: function(data, event) {
+        var cellWidth = (300 / data.numRows);
         var position = this.getPointerPosition(data, event);
-        position.x = Math.floor(position.x / 100);
-        position.y = Math.floor(position.y / 100);
+        position.x = Math.floor(position.x / cellWidth);
+        position.y = Math.floor(position.y / cellWidth);
         return position;
     }
 };
