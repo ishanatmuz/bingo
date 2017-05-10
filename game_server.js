@@ -17,20 +17,24 @@ gameServer.game = gameServer.game || {};
 gameServer.game.state = gameServer.game.state || {};
 
 gameServer.insertClient = function(player) {
-    var type = null;
     if (!_.has(gameServer.game, 'host')) {
         gameServer.game.host = player;
-        type = 'host';
+        return {
+            type: 'host'
+        }
     }
     
     if (!_.has(gameServer.game, 'client')) {
+        console.log('setting client');
         gameServer.game.client = player;
         
-        type = 'client';
+        return {
+            type: 'client'
+        }
     }
     
     return {
-        type: type
+        type: null
     }
 };
 
@@ -64,7 +68,6 @@ var createBoard = function() {
 };
 
 gameServer.initializeGame = function() {
-    gameServer.game = {};
     gameServer.game.numRows = numRows;
     gameServer.game.selections = [];
     gameServer.game.boards = {};
@@ -169,7 +172,7 @@ gameServer.broadcastGame = function() {
     // TODO Check for winner
     
     // Emit the state to host
-    if (gameServer.game.host) {
+    if (_.has(gameServer.game, 'host')) {
         gameServer.game.host.emit('game-state', {
             numRows: gameServer.game.numRows,
             playerType: 'host',
@@ -180,7 +183,7 @@ gameServer.broadcastGame = function() {
     }
     
     // Emit the state to client
-    if (gameServer.game.client) {
+    if (_.has(gameServer.game, 'client')) {
         gameServer.game.client.emit('game-state', {
             numRows: gameServer.game.numRows,
             playerType: 'client',
@@ -190,9 +193,3 @@ gameServer.broadcastGame = function() {
         });
     }
 };
-
-gameServer.initializeGame();
-gameServer.playerInput(1);
-gameServer.playerInput(45);
-gameServer.playerInput(1);
-console.log(gameServer.game);

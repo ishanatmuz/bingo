@@ -33,7 +33,7 @@ sio.on('connection', function(client) {
     // Send the player their information
     client.emit('onconnected', {
         id: client.userid,
-        type: client.type,
+        playerType: client.type,
     });
     
     // Initialize the game
