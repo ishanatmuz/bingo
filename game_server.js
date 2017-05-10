@@ -2,19 +2,43 @@ var _ = require('underscore');
 var gameServer = module.exports = {};
 
 var numRows = 5;
-//var winningCombinations = [
-//    [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}], // Top Row
-//    [{x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1}], // Middle Row
-//    [{x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}], // Bottom Row
-//    [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}], // First Column
-//    [{x: 1, y: 0}, {x: 1, y: 1}, {x: 1, y: 2}], // Second Column
-//    [{x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}], // Third Column
-//    [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}], // Diagonal 1
-//    [{x: 0, y: 2}, {x: 1, y: 1}, {x: 2, y: 0}], // Diagonal 1
-//];
+var winningCombinations = [];
 
 gameServer.game = gameServer.game || {};
 gameServer.game.state = gameServer.game.state || {};
+
+var generateWinningCombinations = function() {
+    var diagonal1 = [];
+    var diagonal2 = [];
+    for (var i = 0; i < numRows; i++) {
+        var row = [];
+        var col = [];
+        for (var j = 0; j < numRows; j++) {
+            row.push({
+                x: j,
+                y: i
+            });
+            col.push({
+                x: i,
+                y: j
+            });
+        }
+        winningCombinations.push(row);
+        winningCombinations.push(col);
+
+        diagonal1.push({
+            x: i,
+            y: i
+        });
+        diagonal2.push({
+            x: numRows - i - 1,
+            y: i
+        });
+    }
+    winningCombinations.push(diagonal1);
+    winningCombinations.push(diagonal2);
+};
+generateWinningCombinations();
 
 gameServer.insertClient = function(player) {
     if (!_.has(gameServer.game, 'host')) {
@@ -79,6 +103,9 @@ gameServer.initializeGame = function() {
     gameServer.game.boards = {};
     gameServer.game.boards.host = createBoard();
     gameServer.game.boards.client = createBoard();
+    gameServer.game.boardBluePrint = {};
+    gameServer.game.boardBluePrint.host = [];
+    gameServer.game.boardBluePrint.client = [];
     gameServer.game.state = {};
     gameServer.game.state.msg = 'waiting';
     gameServer.game.state.host = _.has(gameServer.game, 'host') ? 'available' : 'unavailable';
@@ -116,6 +143,31 @@ gameServer.playerInput = function(player, inputNumber) {
         if (_.isUndefined(result)) {
             // Store newly clicked number information
             gameServer.game.selections.push(inputNumber);
+            // Store the board blueprint for host player
+            for (var i = 0; i < numRows; i++) {
+                for (var j = 0; j < numRows; j++) {
+                    if (inputNumber === gameServer.game.boards.host[i][j]) {
+                        gameServer.game.boardBluePrint.host.push({
+                            x: i,
+                            y: j
+                        });
+                        break;
+                    }
+                }
+            }
+            
+            // Store the board blueprint for client player
+            for (var i = 0; i < numRows; i++) {
+                for (var j = 0; j < numRows; j++) {
+                    if (inputNumber === gameServer.game.boards.client[i][j]) {
+                        gameServer.game.boardBluePrint.client.push({
+                            x: i,
+                            y: j
+                        });
+                        break;
+                    }
+                }
+            }
             
             // Change the turn
             if (gameServer.game.state.msg === 'host_turn') {
@@ -127,55 +179,48 @@ gameServer.playerInput = function(player, inputNumber) {
     }
 };
 
-//gameServer.getResult = function() {
-//    console.log('calculating result');
-//    var containsAll = function(needles, haystack){ 
-//        var results = 0;
-//        for(var i = 0 , len = needles.length; i < len; i++){
-//            for(var j = 0, jlen = haystack.length; j < jlen; j++) {
-//                if ((haystack[j].x === needles[i].x) && (haystack[j].y === needles[i].y)) {
-//                    results += 1;
-//                }
-//            }
-//        }
-//        return results === needles.length;
-//    };
-//    var hostWin = false;
-//    var clientWin = false;
-//    
-//    // Check for host win
-//    hostWin = _.find(winningCombinations, function(combination) {
-//        return containsAll(combination, gameServer.game.input.host) === true;
-//    });
-//    hostWin = !_.isUndefined(hostWin);
-//    
-//    if (hostWin === true) {
-//        gameServer.announceResult('host_won');
-//        return 'host_won';
-//    }
-//    
-//    // Check for client win
-//    clientWin = _.find(winningCombinations, function(combination) {
-//        return containsAll(combination, gameServer.game.input.client) === true;
-//    });
-//    clientWin = !_.isUndefined(clientWin);
-//    if (clientWin === true) {
-//        gameServer.announceResult('client_won');
-//        return 'client_won';
-//    }
-//    
-//    // Check for draw
-//    if ((gameServer.game.input.client.length + gameServer.game.input.host.length) === 9) {
-//        gameServer.announceResult('draw');
-//        return 'draw';
-//    }
-//    
-//    // Game is still going on
-//    return 'ready';
-//};
+gameServer.checkResult = function() {
+    var containsAll = function(needles, haystack){ 
+        var results = 0;
+        for(var i = 0 , len = needles.length; i < len; i++){
+            for(var j = 0, jlen = haystack.length; j < jlen; j++) {
+                if ((haystack[j].x === needles[i].x) && (haystack[j].y === needles[i].y)) {
+                    results += 1;
+                }
+            }
+        }
+        return results === needles.length;
+    };
+    var hostWin = false;
+    var clientWin = false;
+    
+    // Check for host win
+    hostWin = _.find(winningCombinations, function(combination) {
+        return containsAll(combination, gameServer.game.boardBluePrint.host) === true;
+    });
+    hostWin = !_.isUndefined(hostWin);
+    
+    // Check for client win
+    clientWin = _.find(winningCombinations, function(combination) {
+        return containsAll(combination, gameServer.game.boardBluePrint.client) === true;
+    });
+    clientWin = !_.isUndefined(clientWin);
+    
+    // If both completed at the same time game is draw
+    if (hostWin === true && clientWin === true) {
+        gameServer.game.state.msg = 'draw';
+    } else {
+        if (hostWin === true) {
+            gameServer.game.state.msg = 'host_won';
+        } else if (clientWin === true) {
+            gameServer.game.state.msg = 'client_won';
+        }
+    }
+};
 
 gameServer.broadcastGame = function() {
-    // TODO Check for winner
+    // Check result
+    gameServer.checkResult();
     
     // Emit the state to host
     if (_.has(gameServer.game, 'host')) {
