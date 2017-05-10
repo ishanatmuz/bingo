@@ -72,4 +72,13 @@ sio.on('connection', function(client) {
         // Brodcast game
         gameServer.broadcastGame();
     });
+    
+    // When player requests a new game
+    client.on('new-game', function() {
+        // Request a new game with same players
+        gameServer.initializeGame(client);
+        
+        // Broadcast game
+        gameServer.broadcastGame();
+    });
 });

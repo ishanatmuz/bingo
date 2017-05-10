@@ -49,7 +49,6 @@ gameServer.insertClient = function(player) {
     }
     
     if (!_.has(gameServer.game, 'client')) {
-        console.log('setting client');
         gameServer.game.client = player;
         
         return {
@@ -218,29 +217,41 @@ gameServer.checkResult = function() {
     }
 };
 
+gameServer.broadcastToPlayer = function(playerType) {
+    if (playerType === 'host') {
+        // Emit the state to host
+        if (_.has(gameServer.game, 'host')) {
+            gameServer.game.host.emit('game-state', {
+                numRows: gameServer.game.numRows,
+                playerType: 'host',
+                selections: gameServer.game.selections,
+                board: gameServer.game.boards.host,
+                state: gameServer.game.state
+            });
+        }
+    }
+    
+    if (playerType === 'client') {
+        // Emit the state to client
+        if (_.has(gameServer.game, 'client')) {
+            gameServer.game.client.emit('game-state', {
+                numRows: gameServer.game.numRows,
+                playerType: 'client',
+                selections: gameServer.game.selections,
+                board: gameServer.game.boards.client,
+                state: gameServer.game.state
+            });
+        }
+    }
+};
+
 gameServer.broadcastGame = function() {
     // Check result
     gameServer.checkResult();
     
-    // Emit the state to host
-    if (_.has(gameServer.game, 'host')) {
-        gameServer.game.host.emit('game-state', {
-            numRows: gameServer.game.numRows,
-            playerType: 'host',
-            selections: gameServer.game.selections,
-            board: gameServer.game.boards.host,
-            state: gameServer.game.state
-        });
-    }
+    // Broadcast to host
+    gameServer.broadcastToPlayer('host');
     
-    // Emit the state to client
-    if (_.has(gameServer.game, 'client')) {
-        gameServer.game.client.emit('game-state', {
-            numRows: gameServer.game.numRows,
-            playerType: 'client',
-            selections: gameServer.game.selections,
-            board: gameServer.game.boards.client,
-            state: gameServer.game.state
-        });
-    }
+    // Broadcast to client
+    gameServer.broadcastToPlayer('client');
 };
