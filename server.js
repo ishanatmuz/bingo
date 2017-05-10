@@ -12,7 +12,7 @@ var gameport = process.env.PORT || 8000;
 
 server.listen(gameport);
 
-console.log('Tic Tac Toe app listening of port 8000!');
+console.log('Bazinga game server listening on port ' + gameport);
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
