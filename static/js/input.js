@@ -8,6 +8,14 @@ var Input = {
                 self.mouseClick(data, event);
             }
         });
+        
+        data.startButton.addEventListener('click', function(event) {
+            GameSocket.requestStart(data);
+        });
+        
+        data.newGameButton.addEventListener('click', function(event) {
+            GameSocket.requestNewGame(data);
+        });
     },
     
     update: function (data) {

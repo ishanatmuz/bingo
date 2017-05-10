@@ -10,7 +10,15 @@
         <script src="/socket.io/socket.io.js"></script>
     </head>
     <body>
-        <canvas id="main-canvas" width="300" height="300"></canvas>
+        <canvas id="main-canvas" class="center hide" width="300" height="300"></canvas>
+        <div id="waiting" class="center">Loading...</div>
+        <div id="start" class="center hide">Game Connected.<br/>
+            <button id="start-button" type="button">Start?</button>
+        </div>
+        <div id="result" class="center hide"><span id="result-msg"></span><br/>
+            <button id="new-game-button" type="button">New Game?</button>
+        </div>
+        <div id="result" class="center hide"></div>
         <div class="credits">Music: <a href="http://www.bensound.com">Bensound</a></div>
         <script type="text/javascript" src="static/js/gamesocket.js"></script>
         <script type="text/javascript" src="static/js/input.js"></script>

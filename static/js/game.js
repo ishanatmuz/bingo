@@ -4,6 +4,13 @@ var Game = {
         this.data = {};
         this.data.canvas = document.getElementById('main-canvas');
         this.data.ctx = this.data.canvas.getContext('2d');
+        // Handler for other messages
+        this.data.waiting = document.getElementById('waiting');
+        this.data.start = document.getElementById('start');
+        this.data.startButton = document.getElementById('start-button');
+        this.data.result = document.getElementById('result');
+        this.data.resultMsg = document.getElementById('result-msg');
+        this.data.newGameButton = document.getElementById('new-game-button');
         
         // Loading resources
         this.queue = new createjs.LoadQueue();
@@ -28,14 +35,11 @@ var Game = {
         this.data.cellWidth = 60;
         this.data.animationFrame = 0;
         this.data.state = {
-            numRows: 5,
             playerType: null,
             selections: [],
             board: [],
             state: {}
         };
-        
-        
         
         GameSocket.init(this.data);
         Input.init(this.data);

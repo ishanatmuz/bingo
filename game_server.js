@@ -43,6 +43,12 @@ gameServer.removeClient = function(player) {
         return;
     }
     delete gameServer.game[player.type];
+    
+    if (player.type === 'host') {
+        gameServer.game.state.host = 'unavailable';
+    } else if (player.type === 'client') {
+        gameServer.game.state.client = 'unavailable';
+    }
 };
 
 var generatePossibleInputs = function() {

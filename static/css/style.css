@@ -6,13 +6,6 @@ body {
 }
 
 canvas {
-    display: block;
-    position: absolute;
-    margin: auto;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     border: 1px solid #212121;
     user-select: none;
     -ms-user-select: none;
@@ -21,6 +14,25 @@ canvas {
     -moz-user-select: none;
     -webkit-touch-callout: none;
     -webkit-user-drag: none;
+}
+
+.center {
+    display: block;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+div.center {
+    width: 200px;
+    height: 50px;
+}
+
+.hide {
+    display: none;
 }
 
 .credits {
