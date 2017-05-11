@@ -5,6 +5,9 @@ var Renderer = {
     
     update: function(data) {
         // Used to re draw/display things
+        // Update top level "BINGO" based on score
+        data.bingoResult.innerText = "BINGO".substring(0, data.score);
+        
         // Clear Canvas
         data.ctx.clearRect(0, 0, data.canvas.width, data.canvas.height);
         
@@ -18,6 +21,7 @@ var Renderer = {
                 data.start.classList.add('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
+                data.bingoResult.classList.add('hide');
             }
             
             // Opponent has connected
@@ -27,6 +31,7 @@ var Renderer = {
                 data.start.classList.remove('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
+                data.bingoResult.classList.add('hide');
             }
             
             // Player and opponent has started
@@ -37,6 +42,7 @@ var Renderer = {
                 data.start.classList.add('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
+                data.bingoResult.classList.add('hide');
             }
         }
         
@@ -46,7 +52,9 @@ var Renderer = {
             data.start.classList.add('hide');
             data.canvas.classList.remove('hide');
             data.result.classList.add('hide');
+            data.bingoResult.classList.remove('hide');
             
+            // Draw the board on canvas
             this.drawCanvas(data);
         }
         
@@ -68,6 +76,7 @@ var Renderer = {
                 data.resultMsg.innerText = 'You Lost';
             }
             data.result.classList.remove('hide');
+            data.bingoResult.classList.remove('hide');
         }
         if (data.state.msg === 'client_won') {
             data.status.classList.add('hide');
@@ -80,6 +89,7 @@ var Renderer = {
                 data.resultMsg.innerText = 'You Lost';
             }
             data.result.classList.remove('hide');
+            data.bingoResult.classList.remove('hide');
         }
         if (data.state.msg === 'draw') {
             data.status.classList.add('hide');
@@ -87,14 +97,17 @@ var Renderer = {
             data.canvas.classList.add('hide');
             data.resultMsg.innerText = 'Match Draw';
             data.result.classList.remove('hide');
+            data.bingoResult.classList.remove('hide');
         }
         
+        // End (Other player disconnected)
         if (data.state.msg === 'end') {
             data.status.innerHTML = 'Room Link: <b>' + window.location.href + '</b><br/>' + 'Opponent left the room...';
             data.status.classList.remove('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             data.result.classList.add('hide');
+            data.bingoResult.classList.add('hide');
         }
     },
     

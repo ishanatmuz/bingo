@@ -21,6 +21,7 @@ var GameSocket = {
             data.selections = serverData.selections;
             data.board = serverData.board;
             data.state = serverData.state;
+            data.score = serverData.score;
         });
 	},
     

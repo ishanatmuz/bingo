@@ -2,6 +2,7 @@ var Game = {
     init: function() {
         // Canvas
         this.data = {};
+        this.data.bingoResult = document.getElementById('bingo-result');
         this.data.canvas = document.getElementById('main-canvas');
         this.data.ctx = this.data.canvas.getContext('2d');
         // Handler for other messages
@@ -38,7 +39,8 @@ var Game = {
             playerType: null,
             selections: [],
             board: [],
-            state: {}
+            state: {},
+            score: 0
         };
         
         GameSocket.init(this.data);
