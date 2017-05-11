@@ -13,8 +13,8 @@ var Renderer = {
             // Opponent hasn't connected
             if ((data.playerType === 'host' && data.state.client === 'unavailable') ||
                 (data.playerType === 'client' && data.state.host === 'unavailable')) {
-                data.waiting.innerText = 'Waiting for opponent to join...';
-                data.waiting.classList.remove('hide');
+                data.status.innerHTML = 'Room Link: <b>' + window.location.href + '</b><br/>' + 'Waiting for opponent to join...';
+                data.status.classList.remove('hide');
                 data.start.classList.add('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
@@ -23,7 +23,7 @@ var Renderer = {
             // Opponent has connected
             if ((data.playerType === 'host' && data.state.client === 'available' && data.state.host === 'available') ||
                 (data.playerType === 'client' && data.state.host === 'available' && data.state.client === 'available')) {
-                data.waiting.classList.add('hide');
+                data.status.classList.add('hide');
                 data.start.classList.remove('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
@@ -32,8 +32,8 @@ var Renderer = {
             // Player and opponent has started
             if (((data.playerType === 'host') && (data.state.host === 'started') && (data.state.client === 'available')) ||
                 ((data.playerType === 'client') && (data.state.client === 'started') && (data.state.host === 'available'))) {
-                data.waiting.innerText = 'Waiting for opponent to start...';
-                data.waiting.classList.remove('hide');
+                data.status.innerText = 'Waiting for opponent to start...';
+                data.status.classList.remove('hide');
                 data.start.classList.add('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
@@ -42,7 +42,7 @@ var Renderer = {
         
         // Player turn
         if (data.state.msg === 'host_turn' || data.state.msg === 'client_turn') {
-            data.waiting.classList.add('hide');
+            data.status.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.remove('hide');
             data.result.classList.add('hide');
@@ -58,7 +58,7 @@ var Renderer = {
         
         // Match result
         if (data.state.msg === 'host_won') {
-            data.waiting.classList.add('hide');
+            data.status.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             if (data.playerType === 'host') {
@@ -70,7 +70,7 @@ var Renderer = {
             data.result.classList.remove('hide');
         }
         if (data.state.msg === 'client_won') {
-            data.waiting.classList.add('hide');
+            data.status.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             if (data.playerType === 'client') {
@@ -82,11 +82,19 @@ var Renderer = {
             data.result.classList.remove('hide');
         }
         if (data.state.msg === 'draw') {
-            data.waiting.classList.add('hide');
+            data.status.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             data.resultMsg.innerText = 'Match Draw';
             data.result.classList.remove('hide');
+        }
+        
+        if (data.state.msg === 'end') {
+            data.status.innerHTML = 'Room Link: <b>' + window.location.href + '</b><br/>' + 'Opponent left the room...';
+            data.status.classList.remove('hide');
+            data.start.classList.add('hide');
+            data.canvas.classList.add('hide');
+            data.result.classList.add('hide');
         }
     },
     
