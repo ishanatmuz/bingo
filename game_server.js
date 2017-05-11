@@ -1,11 +1,38 @@
 var _ = require('underscore');
+
 var gameServer = module.exports = {};
 
 var numRows = 8;
 var winningCombinations = [];
 
-gameServer.game = gameServer.game || {};
-gameServer.game.state = gameServer.game.state || {};
+gameServer.rooms = [];
+
+var getRoom = function(roomId) {
+    // Find room
+    var room = _.find(gameServer.rooms, function(item) {
+        return item.id === roomId;
+    });
+    // If room doesn't exists create one
+    if (_.isUndefined(room)) {
+        gameServer.rooms.push({
+            id: roomId
+        });
+    };
+    // Find room again
+    room = _.find(gameServer.rooms, function(item) {
+        return item.id === roomId;
+    });
+    return room;
+}
+
+gameServer.joinRoom = function(roomId) {
+    var room = getRoom(roomId);
+    // Create game if it doesn't exists
+    if (!_.has(room, 'game')) {
+        room.game = {};
+        room.game.state = room.game.state || {};
+    }
+};
 
 var generateWinningCombinations = function() {
     var diagonal1 = [];
@@ -40,16 +67,18 @@ var generateWinningCombinations = function() {
 };
 generateWinningCombinations();
 
-gameServer.insertClient = function(player) {
-    if (!_.has(gameServer.game, 'host')) {
-        gameServer.game.host = player;
+gameServer.insertClient = function(roomId, player) {
+    var room = getRoom(roomId);
+    var game = room.game;
+    if (!_.has(game, 'host')) {
+        game.host = player;
         return {
             type: 'host'
         }
     }
     
-    if (!_.has(gameServer.game, 'client')) {
-        gameServer.game.client = player;
+    if (!_.has(game, 'client')) {
+        game.client = player;
         
         return {
             type: 'client'
@@ -61,16 +90,17 @@ gameServer.insertClient = function(player) {
     }
 };
 
-gameServer.removeClient = function(player) {
+gameServer.removeClient = function(roomId, player) {
     if (player.type === null) {
         return;
     }
-    delete gameServer.game[player.type];
+    var room = getRoom(roomId);
+    delete room.game[player.type];
     
     if (player.type === 'host') {
-        gameServer.game.state.host = 'unavailable';
+        room.game.state.host = 'unavailable';
     } else if (player.type === 'client') {
-        gameServer.game.state.client = 'unavailable';
+        room.game.state.client = 'unavailable';
     }
 };
 
@@ -96,57 +126,62 @@ var createBoard = function() {
     return board;
 };
 
-gameServer.initializeGame = function() {
-    gameServer.game.numRows = numRows;
-    gameServer.game.selections = [];
-    gameServer.game.boards = {};
-    gameServer.game.boards.host = createBoard();
-    gameServer.game.boards.client = createBoard();
-    gameServer.game.boardBluePrint = {};
-    gameServer.game.boardBluePrint.host = [];
-    gameServer.game.boardBluePrint.client = [];
-    gameServer.game.state = {};
-    gameServer.game.state.msg = 'waiting';
-    gameServer.game.state.host = _.has(gameServer.game, 'host') ? 'available' : 'unavailable';
-    gameServer.game.state.client = _.has(gameServer.game, 'client') ? 'available' : 'unavailable';
+gameServer.initializeGame = function(roomId) {
+    var room = getRoom(roomId);
+    
+    room.game.numRows = numRows;
+    room.game.selections = [];
+    room.game.boards = {};
+    room.game.boards.host = createBoard();
+    room.game.boards.client = createBoard();
+    room.game.boardBluePrint = {};
+    room.game.boardBluePrint.host = [];
+    room.game.boardBluePrint.client = [];
+    room.game.state = {};
+    room.game.state.msg = 'waiting';
+    room.game.state.host = _.has(room.game, 'host') ? 'available' : 'unavailable';
+    room.game.state.client = _.has(room.game, 'client') ? 'available' : 'unavailable';
 };
 
-gameServer.startGame = function(player) {
+gameServer.startGame = function(roomId, player) {
+    var room = getRoom(roomId);
     // Setting player state as started
     if (player.type === 'host') {
-        gameServer.game.state.host = 'started';
+        room.game.state.host = 'started';
     } else if (player.type === 'client') {
-        gameServer.game.state.client = 'started';
+        room.game.state.client = 'started';
     }
     
     // Starting with host_turn
-    if (gameServer.game.state.host === 'started' &&
-        gameServer.game.state.client === 'started' &&
-        gameServer.game.state.msg === 'waiting') {
-        gameServer.game.state.msg = 'host_turn';
+    if (room.game.state.host === 'started' &&
+        room.game.state.client === 'started' &&
+        room.game.state.msg === 'waiting') {
+        room.game.state.msg = 'host_turn';
     }
 }
 
-gameServer.endGame = function() {
-    gameServer.game.state.msg = 'end';
+gameServer.endGame = function(roomId) {
+    var room = getRoom(roomId);
+    room.game.state.msg = 'end';
 };
 
-gameServer.playerInput = function(player, inputNumber) {
+gameServer.playerInput = function(roomId, player, inputNumber) {
+    var room = getRoom(roomId);
     // Check if input is valid
     if ((inputNumber > 0) && (inputNumber <= numRows * numRows)) {
         // Check if number is already clicked
-        var result = _.find(gameServer.game.selections, function(number) {
+        var result = _.find(room.game.selections, function(number) {
             return number === inputNumber;
         });
         // If number is not already clicked
         if (_.isUndefined(result)) {
             // Store newly clicked number information
-            gameServer.game.selections.push(inputNumber);
+            room.game.selections.push(inputNumber);
             // Store the board blueprint for host player
             for (var i = 0; i < numRows; i++) {
                 for (var j = 0; j < numRows; j++) {
-                    if (inputNumber === gameServer.game.boards.host[i][j]) {
-                        gameServer.game.boardBluePrint.host.push({
+                    if (inputNumber === room.game.boards.host[i][j]) {
+                        room.game.boardBluePrint.host.push({
                             x: i,
                             y: j
                         });
@@ -158,8 +193,8 @@ gameServer.playerInput = function(player, inputNumber) {
             // Store the board blueprint for client player
             for (var i = 0; i < numRows; i++) {
                 for (var j = 0; j < numRows; j++) {
-                    if (inputNumber === gameServer.game.boards.client[i][j]) {
-                        gameServer.game.boardBluePrint.client.push({
+                    if (inputNumber === room.game.boards.client[i][j]) {
+                        room.game.boardBluePrint.client.push({
                             x: i,
                             y: j
                         });
@@ -169,16 +204,18 @@ gameServer.playerInput = function(player, inputNumber) {
             }
             
             // Change the turn
-            if (gameServer.game.state.msg === 'host_turn') {
-                gameServer.game.state.msg = 'client_turn';
-            } else if (gameServer.game.state.msg === 'client_turn') {
-                gameServer.game.state.msg = 'host_turn';
+            if (room.game.state.msg === 'host_turn') {
+                room.game.state.msg = 'client_turn';
+            } else if (room.game.state.msg === 'client_turn') {
+                room.game.state.msg = 'host_turn';
             }
         }
     }
 };
 
-gameServer.checkResult = function() {
+gameServer.checkResult = function(roomId) {
+    var room = getRoom(roomId);
+    
     var containsAll = function(needles, haystack){ 
         var results = 0;
         for(var i = 0 , len = needles.length; i < len; i++){
@@ -195,63 +232,69 @@ gameServer.checkResult = function() {
     
     // Check for host win
     hostWin = _.find(winningCombinations, function(combination) {
-        return containsAll(combination, gameServer.game.boardBluePrint.host) === true;
+        return containsAll(combination, room.game.boardBluePrint.host) === true;
     });
     hostWin = !_.isUndefined(hostWin);
     
     // Check for client win
     clientWin = _.find(winningCombinations, function(combination) {
-        return containsAll(combination, gameServer.game.boardBluePrint.client) === true;
+        return containsAll(combination, room.game.boardBluePrint.client) === true;
     });
     clientWin = !_.isUndefined(clientWin);
     
     // If both completed at the same time game is draw
     if (hostWin === true && clientWin === true) {
-        gameServer.game.state.msg = 'draw';
+        room.game.state.msg = 'draw';
     } else {
         if (hostWin === true) {
-            gameServer.game.state.msg = 'host_won';
+            room.game.state.msg = 'host_won';
         } else if (clientWin === true) {
-            gameServer.game.state.msg = 'client_won';
+            room.game.state.msg = 'client_won';
         }
     }
 };
 
-gameServer.broadcastToPlayer = function(playerType) {
+gameServer.broadcastToPlayer = function(roomId, playerType) {
+    var room = getRoom(roomId);
+    
     if (playerType === 'host') {
         // Emit the state to host
-        if (_.has(gameServer.game, 'host')) {
-            gameServer.game.host.emit('game-state', {
-                numRows: gameServer.game.numRows,
+        if (_.has(room.game, 'host')) {
+            room.game.host.emit('game-state', {
+                room: room.id,
+                numRows: room.game.numRows,
                 playerType: 'host',
-                selections: gameServer.game.selections,
-                board: gameServer.game.boards.host,
-                state: gameServer.game.state
+                selections: room.game.selections,
+                board: room.game.boards.host,
+                state: room.game.state
             });
         }
     }
     
     if (playerType === 'client') {
         // Emit the state to client
-        if (_.has(gameServer.game, 'client')) {
-            gameServer.game.client.emit('game-state', {
-                numRows: gameServer.game.numRows,
+        if (_.has(room.game, 'client')) {
+            room.game.client.emit('game-state', {
+                room: room.id,
+                numRows: room.game.numRows,
                 playerType: 'client',
-                selections: gameServer.game.selections,
-                board: gameServer.game.boards.client,
-                state: gameServer.game.state
+                selections: room.game.selections,
+                board: room.game.boards.client,
+                state: room.game.state
             });
         }
     }
 };
 
-gameServer.broadcastGame = function() {
+gameServer.broadcastGame = function(roomId) {
+    var room = getRoom(roomId);
+    
     // Check result
-    gameServer.checkResult();
+    gameServer.checkResult(roomId);
     
     // Broadcast to host
-    gameServer.broadcastToPlayer('host');
+    gameServer.broadcastToPlayer(roomId, 'host');
     
     // Broadcast to client
-    gameServer.broadcastToPlayer('client');
+    gameServer.broadcastToPlayer(roomId, 'client');
 };
