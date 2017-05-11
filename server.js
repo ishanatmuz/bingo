@@ -6,13 +6,13 @@ var app = expres();
 var server = http.Server(app);
 var io = require('socket.io');
 
-// Create a socket.io instance uisng our express server
+// Create a socket.io instance using our express server
 var sio = io.listen(server);
 var gameport = process.env.PORT || 8000;
 
 server.listen(gameport);
 
-console.log('Bazinga game server listening on port ' + gameport);
+console.log('Bingo game server listening on port ' + gameport);
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');

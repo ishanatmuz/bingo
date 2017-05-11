@@ -2,7 +2,7 @@ var _ = require('underscore');
 
 var gameServer = module.exports = {};
 
-var numRows = 8;
+var numRows = 5;
 var winningCombinations = [];
 
 gameServer.rooms = [];
@@ -141,6 +141,8 @@ gameServer.initializeGame = function(roomId) {
     room.game.state.msg = 'waiting';
     room.game.state.host = _.has(room.game, 'host') ? 'available' : 'unavailable';
     room.game.state.client = _.has(room.game, 'client') ? 'available' : 'unavailable';
+    room.game.hostScore = 0;
+    room.game.clientScore = 0;
 };
 
 gameServer.startGame = function(roomId, player) {
@@ -231,16 +233,24 @@ gameServer.checkResult = function(roomId) {
     var clientWin = false;
     
     // Check for host win
-    hostWin = _.find(winningCombinations, function(combination) {
-        return containsAll(combination, room.game.boardBluePrint.host) === true;
+    var hostScore = 0;
+    _.each(winningCombinations, function(combination) {
+        if (containsAll(combination, room.game.boardBluePrint.host) === true) {
+            hostScore += 1;
+        }
     });
-    hostWin = !_.isUndefined(hostWin);
-    
+    hostWin = hostScore === numRows;
+    room.game.hostScore =  hostScore;
+
     // Check for client win
-    clientWin = _.find(winningCombinations, function(combination) {
-        return containsAll(combination, room.game.boardBluePrint.client) === true;
+    var clientScore = 0;
+    _.each(winningCombinations, function(combination) {
+        if(containsAll(combination, room.game.boardBluePrint.client) === true) {
+            clientScore += 1;
+        }
     });
-    clientWin = !_.isUndefined(clientWin);
+    clientWin = clientScore === numRows;
+    room.game.clientScore = clientScore;
     
     // If both completed at the same time game is draw
     if (hostWin === true && clientWin === true) {
@@ -266,7 +276,8 @@ gameServer.broadcastToPlayer = function(roomId, playerType) {
                 playerType: 'host',
                 selections: room.game.selections,
                 board: room.game.boards.host,
-                state: room.game.state
+                state: room.game.state,
+                score: room.game.hostScore
             });
         }
     }
@@ -280,7 +291,8 @@ gameServer.broadcastToPlayer = function(roomId, playerType) {
                 playerType: 'client',
                 selections: room.game.selections,
                 board: room.game.boards.client,
-                state: room.game.state
+                state: room.game.state,
+                score: room.game.clientScore
             });
         }
     }
