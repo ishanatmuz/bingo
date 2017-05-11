@@ -15,7 +15,7 @@ server.listen(gameport);
 console.log('Bazinga game server listening on port ' + gameport);
 
 app.get('/', function(req, res) {
-	res.sendFile(__dirname + '/room.html');
+	res.sendFile(__dirname + '/index.html');
 });
 
 app.use('/static', expres.static('static'));
