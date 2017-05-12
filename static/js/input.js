@@ -34,27 +34,23 @@ var Input = {
     
     update: function (data) {
         // Check for changes in input and update game state information accordingly
-        // If this is the player's turn then poll for xpad input
-        if (((data.playerType === 'host') && (data.state.msg === 'host_turn')) ||
-                ((data.playerType === 'client') && (data.state.msg === 'client_turn'))) {
-            // Only concerned with first gamepad
-            data.gamepad.gamepad = navigator.getGamepads()[0];
-            if (data.gamepad.gamepad) {
-                // xpad connected
-                if (data.gamepad.exists === false) {
-                    data.gamepad.exists = true;
-                }
+        // Only concerned with first gamepad
+        data.gamepad.gamepad = navigator.getGamepads()[0];
+        if (data.gamepad.gamepad) {
+            // xpad connected
+            if (data.gamepad.exists === false) {
+                data.gamepad.exists = true;
+            }
 
-                // NOTE For Left Trigger / Right Trigger, this doesn't provides the value
-                // NOTE For Left Stick / Right Stick, these provide presses and not movements
-                for (var i = 0; i <= 15; i++) {
-                    if (data.gamepad.gamepad.buttons[i].pressed === true && data.gamepad.buttons[i] === false) {
-                        data.gamepad.buttons[i] = true;
-                    }
-                    if (data.gamepad.gamepad.buttons[i].pressed === false && data.gamepad.buttons[i] === true) {
-                        data.gamepad.buttons[i] = false;
-                        this.gamepadInput(data, i);
-                    }
+            // NOTE For Left Trigger / Right Trigger, this doesn't provides the value
+            // NOTE For Left Stick / Right Stick, these provide presses and not movements
+            for (var i = 0; i <= 15; i++) {
+                if (data.gamepad.gamepad.buttons[i].pressed === true && data.gamepad.buttons[i] === false) {
+                    data.gamepad.buttons[i] = true;
+                }
+                if (data.gamepad.gamepad.buttons[i].pressed === false && data.gamepad.buttons[i] === true) {
+                    data.gamepad.buttons[i] = false;
+                    this.gamepadInput(data, i);
                 }
             }
         }
@@ -97,49 +93,66 @@ var Input = {
     gamepadInput: function(data, buttonIndex) {
         var buttonTypes = ['A', 'B', 'X', 'Y', 'Left Bummper', 'Right Bumper', 'Left Trigger', 'Right Trigger',
                                    'View', 'Menu', 'Left Stick', 'Right Stick', 'D-Up', 'D-Down', 'D-Left', 'D-Right'];
-//        console.log('xPad - ' + buttonTypes[buttonIndex]);
-        switch(buttonTypes[buttonIndex]) {
-            case 'A':
-            case 'X':
-                console.log('Send selection ' + buttonTypes[buttonIndex]);
-                this.sendSelection(data, data.gamepad.selectedCell);
-                break;
-            case 'D-Up':
-                console.log('Go up ' + buttonTypes[buttonIndex]);
-                console.log(data.gamepad.selectedCell);
-                data.gamepad.selectedCell.y -= 1;
-                if (data.gamepad.selectedCell.y < 0) {
-                    data.gamepad.selectedCell.y = 0;
-                }
-                console.log(data.gamepad.selectedCell);
-                break;
-            case 'D-Down':
-                console.log('Go down ' + buttonTypes[buttonIndex]);
-                console.log(data.gamepad.selectedCell);
-                data.gamepad.selectedCell.y += 1;
-                if (data.gamepad.selectedCell.y >= data.numRows) {
-                    data.gamepad.selectedCell.y = data.numRows - 1;
-                }
-                console.log(data.gamepad.selectedCell);
-                break;
-            case 'D-Left':
-                console.log(data.gamepad.selectedCell);
-                data.gamepad.selectedCell.x -= 1;
-                if (data.gamepad.selectedCell.x < 0) {
-                    data.gamepad.selectedCell.x = 0;
-                }
-                console.log(data.gamepad.selectedCell);
-                console.log('Go left ' + buttonTypes[buttonIndex]);
-                break;
-            case 'D-Right':
-                console.log(data.gamepad.selectedCell);
-                data.gamepad.selectedCell.x += 1;
-                if (data.gamepad.selectedCell.x >= data.numRows) {
-                    data.gamepad.selectedCell.x = data.numRows - 1;
-                }
-                console.log(data.gamepad.selectedCell);
-                console.log('Go right ' + buttonTypes[buttonIndex]);
-                break;
+        console.log('xPad - ' + buttonTypes[buttonIndex]);
+        // If this is the player's turn then poll for xpad input
+        if (((data.playerType === 'host') && (data.state.msg === 'host_turn')) ||
+                ((data.playerType === 'client') && (data.state.msg === 'client_turn'))) {
+            switch(buttonTypes[buttonIndex]) {
+                case 'A':
+                case 'X':
+                    console.log('Send selection ' + buttonTypes[buttonIndex]);
+                    this.sendSelection(data, data.gamepad.selectedCell);
+                    break;
+                case 'D-Up':
+                    console.log('Go up ' + buttonTypes[buttonIndex]);
+                    console.log(data.gamepad.selectedCell);
+                    data.gamepad.selectedCell.y -= 1;
+                    if (data.gamepad.selectedCell.y < 0) {
+                        data.gamepad.selectedCell.y = 0;
+                    }
+                    console.log(data.gamepad.selectedCell);
+                    break;
+                case 'D-Down':
+                    console.log('Go down ' + buttonTypes[buttonIndex]);
+                    console.log(data.gamepad.selectedCell);
+                    data.gamepad.selectedCell.y += 1;
+                    if (data.gamepad.selectedCell.y >= data.numRows) {
+                        data.gamepad.selectedCell.y = data.numRows - 1;
+                    }
+                    console.log(data.gamepad.selectedCell);
+                    break;
+                case 'D-Left':
+                    console.log(data.gamepad.selectedCell);
+                    data.gamepad.selectedCell.x -= 1;
+                    if (data.gamepad.selectedCell.x < 0) {
+                        data.gamepad.selectedCell.x = 0;
+                    }
+                    console.log(data.gamepad.selectedCell);
+                    console.log('Go left ' + buttonTypes[buttonIndex]);
+                    break;
+                case 'D-Right':
+                    console.log(data.gamepad.selectedCell);
+                    data.gamepad.selectedCell.x += 1;
+                    if (data.gamepad.selectedCell.x >= data.numRows) {
+                        data.gamepad.selectedCell.x = data.numRows - 1;
+                    }
+                    console.log(data.gamepad.selectedCell);
+                    console.log('Go right ' + buttonTypes[buttonIndex]);
+                    break;
+            }
+        }
+        
+        // Opponent has connected and waiting for the player to start
+        if ((data.playerType === 'host' && data.state.client === 'available' && data.state.host === 'available') ||
+            (data.playerType === 'client' && data.state.host === 'available' && data.state.client === 'available')) {
+            if (buttonTypes[buttonIndex] === 'Menu') {
+                GameSocket.requestStart(data);
+            }
+        }
+        
+        // New game message
+        if ((data.state.msg === 'host_won') || (data.state.msg === 'client_won') || ((data.state.msg === 'draw'))) {
+            GameSocket.requestNewGame(data);
         }
     },
     
