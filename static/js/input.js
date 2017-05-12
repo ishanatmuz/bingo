@@ -35,26 +35,26 @@ var Input = {
     update: function (data) {
         // Check for changes in input and update game state information accordingly
         // If this is the player's turn then poll for xpad input
-//        if (((data.playerType === 'host') && (data.state.msg === 'host_turn')) ||
-//                ((data.playerType === 'client') && (data.state.msg === 'client_turn'))) {
-//    }
-        // Only concerned with first gamepad
-        data.gamepad.gamepad = navigator.getGamepads()[0];
-        if (data.gamepad.gamepad) {
-            // xpad connected
-            if (data.gamepad.exists === false) {
-                data.gamepad.exists = true;
-            }
-
-            // NOTE For Left Trigger / Right Trigger, this doesn't provides the value
-            // NOTE For Left Stick / Right Stick, these provide presses and not movements
-            for (var i = 0; i <= 15; i++) {
-                if (data.gamepad.gamepad.buttons[i].pressed === true && data.gamepad.buttons[i] === false) {
-                    data.gamepad.buttons[i] = true;
+        if (((data.playerType === 'host') && (data.state.msg === 'host_turn')) ||
+                ((data.playerType === 'client') && (data.state.msg === 'client_turn'))) {
+            // Only concerned with first gamepad
+            data.gamepad.gamepad = navigator.getGamepads()[0];
+            if (data.gamepad.gamepad) {
+                // xpad connected
+                if (data.gamepad.exists === false) {
+                    data.gamepad.exists = true;
                 }
-                if (data.gamepad.gamepad.buttons[i].pressed === false && data.gamepad.buttons[i] === true) {
-                    data.gamepad.buttons[i] = false;
-                    this.gamepadInput(data, i);
+
+                // NOTE For Left Trigger / Right Trigger, this doesn't provides the value
+                // NOTE For Left Stick / Right Stick, these provide presses and not movements
+                for (var i = 0; i <= 15; i++) {
+                    if (data.gamepad.gamepad.buttons[i].pressed === true && data.gamepad.buttons[i] === false) {
+                        data.gamepad.buttons[i] = true;
+                    }
+                    if (data.gamepad.gamepad.buttons[i].pressed === false && data.gamepad.buttons[i] === true) {
+                        data.gamepad.buttons[i] = false;
+                        this.gamepadInput(data, i);
+                    }
                 }
             }
         }
