@@ -108,7 +108,7 @@ var Input = {
                     console.log(data.gamepad.selectedCell);
                     data.gamepad.selectedCell.y -= 1;
                     if (data.gamepad.selectedCell.y < 0) {
-                        data.gamepad.selectedCell.y = 0;
+                        data.gamepad.selectedCell.y = data.numRows - 1;
                     }
                     console.log(data.gamepad.selectedCell);
                     break;
@@ -117,7 +117,7 @@ var Input = {
                     console.log(data.gamepad.selectedCell);
                     data.gamepad.selectedCell.y += 1;
                     if (data.gamepad.selectedCell.y >= data.numRows) {
-                        data.gamepad.selectedCell.y = data.numRows - 1;
+                        data.gamepad.selectedCell.y = 0;
                     }
                     console.log(data.gamepad.selectedCell);
                     break;
@@ -125,7 +125,7 @@ var Input = {
                     console.log(data.gamepad.selectedCell);
                     data.gamepad.selectedCell.x -= 1;
                     if (data.gamepad.selectedCell.x < 0) {
-                        data.gamepad.selectedCell.x = 0;
+                        data.gamepad.selectedCell.x = data.numRows - 1;
                     }
                     console.log(data.gamepad.selectedCell);
                     console.log('Go left ' + buttonTypes[buttonIndex]);
@@ -134,7 +134,7 @@ var Input = {
                     console.log(data.gamepad.selectedCell);
                     data.gamepad.selectedCell.x += 1;
                     if (data.gamepad.selectedCell.x >= data.numRows) {
-                        data.gamepad.selectedCell.x = data.numRows - 1;
+                        data.gamepad.selectedCell.x = 0;
                     }
                     console.log(data.gamepad.selectedCell);
                     console.log('Go right ' + buttonTypes[buttonIndex]);
