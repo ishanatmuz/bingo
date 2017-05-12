@@ -118,11 +118,15 @@ var Renderer = {
         for (var i = 0; i < data.numRows; i++) {
             for (var j = 0; j < data.numRows; j++) {
                 var number = data.board[i][j];
-                // Draw number
-                this.drawNumber(data, number, i, j);
-                // Draw selection cross
+                // Draw number in grayish color
+                this.drawNumber(data, number, i, j, '#897f7f');
+                
+                // Value is selected
                 if (data.selections.indexOf(number) !== -1) {
+                    // Draw selection cross
                     this.drawCross(data, i, j);
+                    // Re-draw number in black
+                    this.drawNumber(data, number, i, j, '#000000');
                 }
             }
         }
@@ -152,20 +156,32 @@ var Renderer = {
         }
     },
     
-    drawNumber: function(data, number, x, y) {
+    drawNumber: function(data, number, x, y, color) {
         var canvasWidth = data.canvas.width;
         var cellWidth = (canvasWidth / data.numRows);
+        
+        // Setting style to display
         data.ctx.font = '40px serif';
+        data.ctx.fillStyle = color;
+        // The number should not be clinging to the side
         var xOffset = 10;
         if (number < 10) {
             xOffset = 20;
         }
+        // Draw the number
         data.ctx.fillText('' + number, (y * cellWidth) + xOffset, ((x + 1) * cellWidth) - 15);
+        // Reset style
+        data.ctx.fillStyle = '#000000';
     },
     
     drawCross: function(data, x, y) {
         var canvasWidth = data.canvas.width;
         var cellWidth = (canvasWidth / data.numRows);
+        
+        // Setting style
+        data.ctx.lineWidth = 2;
+        data.ctx.strokeStyle = '#3F5F5F';
+        
         // Diagonal 1
         data.ctx.beginPath();
         data.ctx.moveTo(cellWidth * y, cellWidth * x);
@@ -177,6 +193,10 @@ var Renderer = {
         data.ctx.moveTo(cellWidth * y, cellWidth * (x + 1));
         data.ctx.lineTo(cellWidth * (y + 1), cellWidth * x);
         data.ctx.stroke();
+        
+        // Reset the style
+        data.ctx.lineWidth = 1;
+        data.ctx.strokeStyle = '#000000';
     },
     
     drawCellBorder: function(data, position) {
