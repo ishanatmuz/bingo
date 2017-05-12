@@ -225,9 +225,19 @@ var Renderer = {
     
     drawWaiting: function(data) {
         var canvasWidth = data.canvas.width;
-        data.ctx.font = '48px serif';
-        data.ctx.fillStyle = 'red';
-        data.ctx.fillText('Waiting', (canvasWidth / 4), ((canvasWidth / 2) + (canvasWidth / 10)));
+        // Setting stye
+        data.ctx.font = '60px serif';
+        data.ctx.fillStyle = '#c40000';
+        data.ctx.shadowColor = '#6c3737';
+        data.ctx.shadowBlur = 10;
+        data.ctx.shadowOffsetX = 2;
+        data.ctx.shadowOffsetY = 2;
+        data.ctx.fillText('Waiting', (canvasWidth / 5), ((canvasWidth / 2) + (canvasWidth / 10)));
+        // Reset style
         data.ctx.fillStyle = 'black';
+        data.ctx.shadowColor = 'black';
+        data.ctx.shadowBlur = 0;
+        data.ctx.shadowOffsetX = 0;
+        data.ctx.shadowOffsetY = 0;
     }
 };
