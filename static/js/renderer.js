@@ -126,6 +126,11 @@ var Renderer = {
                 }
             }
         }
+        
+        // Draw xpad selection
+        if (data.gamepad.exists) {
+            this.drawCellBorder(data, data.gamepad.selectedCell);
+        }
     },
     
     drawGrid: function(data) {
@@ -172,6 +177,30 @@ var Renderer = {
         data.ctx.moveTo(cellWidth * y, cellWidth * (x + 1));
         data.ctx.lineTo(cellWidth * (y + 1), cellWidth * x);
         data.ctx.stroke();
+    },
+    
+    drawCellBorder: function(data, position) {
+        var canvasWidth = data.canvas.width;
+        var cellWidth = (canvasWidth / data.numRows);
+        // Changing "X" and "Y" co-ordinates to fit display
+        var x = position.y;
+        var y = position.x;
+        
+        // set style
+        data.ctx.strokeStyle = '#ff0000';
+        data.ctx.lineWidth = 4;
+        
+        data.ctx.beginPath();
+        data.ctx.moveTo(cellWidth * y, cellWidth * x);
+        data.ctx.lineTo(cellWidth * y, cellWidth * (x + 1));
+        data.ctx.lineTo(cellWidth * (y + 1), cellWidth * (x + 1));
+        data.ctx.lineTo(cellWidth * (y + 1), cellWidth * x);
+        data.ctx.lineTo(cellWidth * y, cellWidth * x);
+        data.ctx.stroke();
+        
+        // Re-setting style
+        data.ctx.strokeStyle = '#000000';
+        data.ctx.lineWidth = 1;
     },
     
     drawWaiting: function(data) {
