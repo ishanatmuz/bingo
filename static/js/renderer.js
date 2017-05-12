@@ -126,7 +126,7 @@ var Renderer = {
                     // Draw selection cross
                     this.drawCross(data, i, j);
                     // Re-draw number in black
-                    this.drawNumber(data, number, i, j, '#000000');
+                    this.drawNumber(data, number, i, j, '#004060');
                 }
             }
         }
@@ -180,7 +180,7 @@ var Renderer = {
         
         // Setting style
         data.ctx.lineWidth = 2;
-        data.ctx.strokeStyle = '#3F5F5F';
+        data.ctx.strokeStyle = '#006699';
         
         // Diagonal 1
         data.ctx.beginPath();
@@ -207,7 +207,7 @@ var Renderer = {
         var y = position.x;
         
         // set style
-        data.ctx.strokeStyle = '#ff0000';
+        data.ctx.strokeStyle = '#0099CC';
         data.ctx.lineWidth = 4;
         
         data.ctx.beginPath();
