@@ -131,15 +131,17 @@ var Renderer = {
             }
         }
         
-        // Draw xpad selection
+        // Draw selection
         if (data.gamepad.exists) {
-            this.drawCellBorder(data, data.gamepad.selectedCell);
+            this.drawCellBorder(data, data.selectedCell);
         }
     },
     
     drawGrid: function(data) {
         var canvasWidth = data.canvas.width;
         var cellWidth = (canvasWidth / data.numRows);
+        
+        // Looping over all the cells
         for (var i = 0; i < data.numRows; i++) {
             // Vertical line
             data.ctx.beginPath();
@@ -152,7 +154,6 @@ var Renderer = {
             data.ctx.moveTo(0, cellWidth * (i + 1));
             data.ctx.lineTo(canvasWidth, cellWidth * (i + 1));
             data.ctx.stroke();
-            
         }
     },
     

@@ -25,11 +25,41 @@ var Input = {
         data.gamepad = {};
         data.gamepad.buttons = [];
         data.gamepad.exists = false;
-        data.gamepad.selectedCell = {x: 0, y: 0};
         // Initialized all buttons as depressed
         for (var i = 0; i <= 15; i++) {
             data.gamepad.buttons.push(false);
         }
+        
+        // Mouse over the canvas
+        data.canvas.addEventListener('mousemove', function(event) {
+            // If this is the player's turn then handle mouseover events
+            if (((data.playerType === 'host') && (data.state.msg === 'host_turn')) ||
+                    ((data.playerType === 'client') && (data.state.msg === 'client_turn'))) {
+                console.log('x ' + (event.clientX - event.target.offsetLeft) + ' y ' + (event.clientY - event.target.offsetTop));
+                var position = {
+                    x: event.clientX - event.target.offsetLeft,
+                    y: event.clientY - event.target.offsetTop
+                };
+                // Sanity checks, to make sure the mouse move doesn't drags the selected cell out of the grid
+                if (position.x < 0) {
+                    position.x = 0;
+                }
+                if (position.x >= data.canvas.width) {
+                    position.x = data.canvas.width - 1;
+                }
+                if (position.y < 0) {
+                    position.y = 0;
+                }
+                if (position.y >= data.canvas.width) {
+                    position.y = data.canvas.width - 1;
+                }
+                // Getting the selected cell
+                var selectedCell = self.getCellAtPosition(data, position);
+                console.log('Selected cell');
+                console.log(selectedCell);
+                data.selectedCell = selectedCell;
+            }
+        });
     },
     
     update: function (data) {
@@ -57,7 +87,8 @@ var Input = {
     },
     
     mouseClick: function(data, event) {
-        var clickedCell = this.getClickedCell(data, event);
+        var position = this.getPointerPosition(data, event);
+        var clickedCell = this.getCellAtPosition(data, position);
         this.sendSelection(data, clickedCell);
     },
     
@@ -82,9 +113,8 @@ var Input = {
         }
     },
     
-    getClickedCell: function(data, event) {
+    getCellAtPosition: function(data, position) {
         var cellWidth = (data.canvas.width / data.numRows);
-        var position = this.getPointerPosition(data, event);
         position.x = Math.floor(position.x / cellWidth);
         position.y = Math.floor(position.y / cellWidth);
         return position;
@@ -101,42 +131,42 @@ var Input = {
                 case 'A':
                 case 'X':
                     console.log('Send selection ' + buttonTypes[buttonIndex]);
-                    this.sendSelection(data, data.gamepad.selectedCell);
+                    this.sendSelection(data, data.selectedCell);
                     break;
                 case 'D-Up':
                     console.log('Go up ' + buttonTypes[buttonIndex]);
-                    console.log(data.gamepad.selectedCell);
-                    data.gamepad.selectedCell.y -= 1;
-                    if (data.gamepad.selectedCell.y < 0) {
-                        data.gamepad.selectedCell.y = data.numRows - 1;
+                    console.log(data.selectedCell);
+                    data.selectedCell.y -= 1;
+                    if (data.selectedCell.y < 0) {
+                        data.selectedCell.y = data.numRows - 1;
                     }
-                    console.log(data.gamepad.selectedCell);
+                    console.log(data.selectedCell);
                     break;
                 case 'D-Down':
                     console.log('Go down ' + buttonTypes[buttonIndex]);
-                    console.log(data.gamepad.selectedCell);
-                    data.gamepad.selectedCell.y += 1;
-                    if (data.gamepad.selectedCell.y >= data.numRows) {
-                        data.gamepad.selectedCell.y = 0;
+                    console.log(data.selectedCell);
+                    data.selectedCell.y += 1;
+                    if (data.selectedCell.y >= data.numRows) {
+                        data.selectedCell.y = 0;
                     }
-                    console.log(data.gamepad.selectedCell);
+                    console.log(data.selectedCell);
                     break;
                 case 'D-Left':
-                    console.log(data.gamepad.selectedCell);
-                    data.gamepad.selectedCell.x -= 1;
-                    if (data.gamepad.selectedCell.x < 0) {
-                        data.gamepad.selectedCell.x = data.numRows - 1;
+                    console.log(data.selectedCell);
+                    data.selectedCell.x -= 1;
+                    if (data.selectedCell.x < 0) {
+                        data.selectedCell.x = data.numRows - 1;
                     }
-                    console.log(data.gamepad.selectedCell);
+                    console.log(data.selectedCell);
                     console.log('Go left ' + buttonTypes[buttonIndex]);
                     break;
                 case 'D-Right':
-                    console.log(data.gamepad.selectedCell);
-                    data.gamepad.selectedCell.x += 1;
-                    if (data.gamepad.selectedCell.x >= data.numRows) {
-                        data.gamepad.selectedCell.x = 0;
+                    console.log(data.selectedCell);
+                    data.selectedCell.x += 1;
+                    if (data.selectedCell.x >= data.numRows) {
+                        data.selectedCell.x = 0;
                     }
-                    console.log(data.gamepad.selectedCell);
+                    console.log(data.selectedCell);
                     console.log('Go right ' + buttonTypes[buttonIndex]);
                     break;
             }

@@ -35,6 +35,7 @@ var Game = {
         this.data.cellHeight = 60;
         this.data.cellWidth = 60;
         this.data.animationFrame = 0;
+        this.data.selectedCell = {x: 0, y: 0};
         this.data.state = {
             playerType: null,
             selections: [],
