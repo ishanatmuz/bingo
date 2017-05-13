@@ -75,7 +75,9 @@ var Renderer = {
             data.status.classList.add('hide');
             data.roomLink.classList.add('hide');
             data.start.classList.add('hide');
-            data.canvas.classList.add('hide');
+            // Draw the board on canvas
+            this.drawCanvas(data);
+            data.canvas.classList.remove('hide');
             if (data.playerType === 'host') {
                 data.resultMsg.innerText = 'You Won';
             }
@@ -89,7 +91,9 @@ var Renderer = {
             data.status.classList.add('hide');
             data.roomLink.classList.add('hide');
             data.start.classList.add('hide');
-            data.canvas.classList.add('hide');
+            // Draw the board on canvas
+            this.drawCanvas(data);
+            data.canvas.classList.remove('hide');
             if (data.playerType === 'client') {
                 data.resultMsg.innerText = 'You Won';
             }
@@ -103,7 +107,9 @@ var Renderer = {
             data.status.classList.add('hide');
             data.roomLink.classList.add('hide');
             data.start.classList.add('hide');
-            data.canvas.classList.add('hide');
+            // Draw the board on canvas
+            this.drawCanvas(data);
+            data.canvas.classList.remove('hide');
             data.resultMsg.innerText = 'Match Draw';
             data.result.classList.remove('hide');
             data.bingoResult.classList.remove('hide');
