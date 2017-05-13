@@ -1,6 +1,6 @@
 // Setting environment variable
 process.env.DEBUG = 'bingo';
-process.envDEBUG_FD = 3;
+process.env.DEBUG_FD = 3;
 
 var _ = require('underscore');
 const UUID = require('uuid/v4');
