@@ -15,6 +15,7 @@
   "author": "Ishan <ishanatmuzaffarpur@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "debug": "^2.6.6",
     "express": "^4.15.2",
     "socket.io": "^2.0.1",
     "underscore": "^1.8.3",
