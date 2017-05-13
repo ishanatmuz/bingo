@@ -48,8 +48,35 @@ canvas {
 }
 
 .info {
-    width: 300px;
+    width: 600px;
     height: 50px;
+    color: #c9c8c8;
+    font-size: 30px;
+}
+
+.info span {
+    background: #417cb8;
+    padding: 10px;
+    color: #c9c8c8;
+}
+
+.info button {
+    background-color: #6496c8;
+    text-shadow: -1px 1px #417cb8;
+    border: none;
+    color: #c9c8c8;
+    padding: 10px;
+    font-size: 30px;
+}
+
+.info button:hover {
+    background-color: #346392;
+    text-shadow: -1px 1px #27496d;
+}
+
+.info button:active {
+    background-color: #27496d;
+    text-shadow: -1px 1px #193047;
 }
 
 #bingo-result {
