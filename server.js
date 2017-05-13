@@ -1,3 +1,7 @@
+// Setting environment variable
+process.env.DEBUG = 'bingo';
+process.envDEBUG_FD = 3;
+
 var _ = require('underscore');
 const UUID = require('uuid/v4');
 var http = require('http');
@@ -13,7 +17,7 @@ var gameport = process.env.PORT || 8000;
 
 server.listen(gameport);
 
-console.log('Bingo game server listening on port ' + gameport);
+// console.log('Bingo game server listening on port ' + gameport);
 debug('Bingo game server listening on port ' + gameport);
 
 app.get('/', function(req, res) {
