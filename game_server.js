@@ -69,6 +69,7 @@ var generateWinningCombinations = function() {
 generateWinningCombinations();
 
 gameServer.insertClient = function(roomId, player) {
+    debug('insertClient ' + player.type);
     var room = getRoom(roomId);
     var game = room.game;
     if (!_.has(game, 'host')) {
@@ -92,6 +93,7 @@ gameServer.insertClient = function(roomId, player) {
 };
 
 gameServer.removeClient = function(roomId, player) {
+    debug('removeClient ' + player.type);
     if (player.type === null) {
         return;
     }
@@ -147,6 +149,7 @@ gameServer.initializeGame = function(roomId) {
 };
 
 gameServer.startGame = function(roomId, player) {
+    debug('startGame ' + player.type);
     var room = getRoom(roomId);
     // Setting player state as started
     if (player.type === 'host') {
@@ -314,6 +317,7 @@ gameServer.broadcastToPlayer = function(roomId, playerType) {
 };
 
 gameServer.broadcastGame = function(roomId) {
+    debug('broadcasting game to players');
     var room = getRoom(roomId);
     
     // Check result
