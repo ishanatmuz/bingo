@@ -132,9 +132,7 @@ var Renderer = {
         }
         
         // Draw selection
-        if (data.gamepad.exists) {
-            this.drawCellBorder(data, data.selectedCell);
-        }
+        this.drawCellBorder(data, data.selectedCell);
     },
     
     drawGrid: function(data) {
