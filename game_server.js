@@ -169,6 +169,7 @@ gameServer.endGame = function(roomId) {
 };
 
 gameServer.playerInput = function(roomId, player, inputNumber) {
+    debug('Player input ' + player.type + ' : ' + inputNumber);
     var room = getRoom(roomId);
     // Check if input is valid
     if ((inputNumber > 0) && (inputNumber <= numRows * numRows)) {
