@@ -69,7 +69,7 @@ var generateWinningCombinations = function() {
 generateWinningCombinations();
 
 gameServer.insertClient = function(roomId, player) {
-    debug('insertClient ' + player.type);
+    debug('insertClient %O %O', roomId, player.type);
     var room = getRoom(roomId);
     var game = room.game;
     if (!_.has(game, 'host')) {
@@ -93,7 +93,7 @@ gameServer.insertClient = function(roomId, player) {
 };
 
 gameServer.removeClient = function(roomId, player) {
-    debug('removeClient ' + player.type);
+    debug('removeClient %O %O', roomId, player.type);
     if (player.type === null) {
         return;
     }
@@ -149,7 +149,7 @@ gameServer.initializeGame = function(roomId) {
 };
 
 gameServer.startGame = function(roomId, player) {
-    debug('startGame ' + player.type);
+    debug('startGame %O %O', roomId, player.type);
     var room = getRoom(roomId);
     // Setting player state as started
     if (player.type === 'host') {
@@ -172,7 +172,7 @@ gameServer.endGame = function(roomId) {
 };
 
 gameServer.playerInput = function(roomId, player, inputNumber) {
-    debug('Player input ' + player.type + ' : ' + inputNumber);
+    debug('Player input %O %O', roomId, player.type);
     var room = getRoom(roomId);
     // Check if input is valid
     if ((inputNumber > 0) && (inputNumber <= numRows * numRows)) {
@@ -246,12 +246,10 @@ gameServer.checkResult = function(roomId) {
     });
     hostWin = hostScore === numRows;
     room.game.hostScore =  hostScore;
-    debug('HostWin ' + hostWin);
-    debug('HostScore ' + hostScore);
-    debug('Host board');
-    debug(room.game.boards.host);
-    debug('Host board blueprint');
-    debug(room.game.boardBluePrint.host);
+    debug('HostWin %O', hostWin);
+    debug('HostScore %O', hostScore);
+    debug('Host board %O', room.game.boards.host);
+    debug('Host board blueprint %O', room.game.boardBluePrint.host);
 
     // Check for client win
     var clientScore = 0;
@@ -262,12 +260,10 @@ gameServer.checkResult = function(roomId) {
     });
     clientWin = clientScore === numRows;
     room.game.clientScore = clientScore;
-    debug('ClientWin ' + clientWin);
-    debug('clientScore ' + clientScore);
-    debug('Client board');
-    debug(room.game.boards.client);
-    debug('Client board blueprint');
-    debug(room.game.boardBluePrint.client);
+    debug('ClientWin %O', clientWin);
+    debug('clientScore %O', clientScore);
+    debug('Client board %O', room.game.boards.client);
+    debug('Client board blueprint %O', room.game.boardBluePrint.client);
     
     // If both completed at the same time game is draw
     if (hostWin === true && clientWin === true) {
@@ -279,7 +275,7 @@ gameServer.checkResult = function(roomId) {
             room.game.state.msg = 'client_won';
         }
     }
-    debug('Match state ' + room.game.state.msg);
+    debug('Match state %O', room.game.state.msg);
 };
 
 gameServer.broadcastToPlayer = function(roomId, playerType) {
@@ -317,8 +313,8 @@ gameServer.broadcastToPlayer = function(roomId, playerType) {
 };
 
 gameServer.broadcastGame = function(roomId) {
-    debug('broadcasting game to players');
     var room = getRoom(roomId);
+    debug('broadcasting game to players %O', roomId);
     
     // Check result
     gameServer.checkResult(roomId);
