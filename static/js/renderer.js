@@ -16,8 +16,11 @@ var Renderer = {
             // Opponent hasn't connected
             if ((data.playerType === 'host' && data.state.client === 'unavailable') ||
                 (data.playerType === 'client' && data.state.host === 'unavailable')) {
-                data.status.innerHTML = 'Room Link: <b>' + window.location.href + '</b><br/>' + 'Waiting for opponent to join...';
-                data.status.classList.remove('hide');
+                if (data.roomLink.classList.contains('hide')) {
+                    data.roomLink.innerHTML = 'Room Link: <b>' + window.location.href + '</b><br/>' + 'Waiting for opponent to join...';
+                    data.roomLink.classList.remove('hide');
+                }
+                data.status.classList.add('hide');
                 data.start.classList.add('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
@@ -28,6 +31,7 @@ var Renderer = {
             if ((data.playerType === 'host' && data.state.client === 'available' && data.state.host === 'available') ||
                 (data.playerType === 'client' && data.state.host === 'available' && data.state.client === 'available')) {
                 data.status.classList.add('hide');
+                data.roomLink.classList.add('hide');
                 data.start.classList.remove('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
@@ -39,6 +43,7 @@ var Renderer = {
                 ((data.playerType === 'client') && (data.state.client === 'started') && (data.state.host === 'available'))) {
                 data.status.innerText = 'Waiting for opponent to start...';
                 data.status.classList.remove('hide');
+                data.roomLink.classList.add('hide');
                 data.start.classList.add('hide');
                 data.canvas.classList.add('hide');
                 data.result.classList.add('hide');
@@ -49,6 +54,7 @@ var Renderer = {
         // Player turn
         if (data.state.msg === 'host_turn' || data.state.msg === 'client_turn') {
             data.status.classList.add('hide');
+            data.roomLink.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.remove('hide');
             data.result.classList.add('hide');
@@ -67,6 +73,7 @@ var Renderer = {
         // Match result
         if (data.state.msg === 'host_won') {
             data.status.classList.add('hide');
+            data.roomLink.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             if (data.playerType === 'host') {
@@ -80,6 +87,7 @@ var Renderer = {
         }
         if (data.state.msg === 'client_won') {
             data.status.classList.add('hide');
+            data.roomLink.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             if (data.playerType === 'client') {
@@ -93,6 +101,7 @@ var Renderer = {
         }
         if (data.state.msg === 'draw') {
             data.status.classList.add('hide');
+            data.roomLink.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             data.resultMsg.innerText = 'Match Draw';
@@ -102,8 +111,11 @@ var Renderer = {
         
         // End (Other player disconnected)
         if (data.state.msg === 'end') {
-            data.status.innerHTML = 'Room Link: <b>' + window.location.href + '</b><br/>' + 'Opponent left the room...';
-            data.status.classList.remove('hide');
+            if (data.roomLink.classList.contains('hide')) {
+                data.roomLink.innerHTML = 'Room Link: <p><b>' + window.location.href + '</b></p>' + 'Opponent left the room...';
+                data.roomLink.classList.remove('hide');
+            }
+            data.status.classList.add('hide');
             data.start.classList.add('hide');
             data.canvas.classList.add('hide');
             data.result.classList.add('hide');

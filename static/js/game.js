@@ -7,6 +7,7 @@ var Game = {
         this.data.ctx = this.data.canvas.getContext('2d');
         // Handler for other messages
         this.data.status = document.getElementById('status');
+        this.data.roomLink = document.getElementById('room-link');
         this.data.start = document.getElementById('start');
         this.data.startButton = document.getElementById('start-button');
         this.data.result = document.getElementById('result');
