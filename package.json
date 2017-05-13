@@ -1,13 +1,14 @@
 {
-  "name": "tic-tac-toe",
+  "name": "Bingo",
   "version": "0.0.1",
-  "description": "A multiplayer html5 canvas based tic tac toe",
+  "description": "A multiplayer html5 canvas based Bingo game",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js 3>default.log",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "tic-tac-toe",
+    "bingo",
     "canvas",
     "html5",
     "multi-player"
@@ -15,6 +16,7 @@
   "author": "Ishan <ishanatmuzaffarpur@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "debug": "^2.6.6",
     "express": "^4.15.2",
     "socket.io": "^2.0.1",
     "underscore": "^1.8.3",
