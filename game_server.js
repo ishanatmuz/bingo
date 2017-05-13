@@ -1,4 +1,5 @@
 var _ = require('underscore');
+const debug = require('debug')('bingo');
 
 var gameServer = module.exports = {};
 
@@ -241,6 +242,12 @@ gameServer.checkResult = function(roomId) {
     });
     hostWin = hostScore === numRows;
     room.game.hostScore =  hostScore;
+    debug('HostWin ' + hostWin);
+    debug('HostScore ' + hostScore);
+    debug('Host board');
+    debug(room.game.boards.host);
+    debug('Host board blueprint');
+    debug(room.game.boardBluePrint.host);
 
     // Check for client win
     var clientScore = 0;
@@ -251,6 +258,12 @@ gameServer.checkResult = function(roomId) {
     });
     clientWin = clientScore === numRows;
     room.game.clientScore = clientScore;
+    debug('ClientWin ' + clientWin);
+    debug('clientScore ' + clientScore);
+    debug('Client board');
+    debug(room.game.boards.client);
+    debug('Client board blueprint');
+    debug(room.game.boardBluePrint.client);
     
     // If both completed at the same time game is draw
     if (hostWin === true && clientWin === true) {
@@ -262,6 +275,7 @@ gameServer.checkResult = function(roomId) {
             room.game.state.msg = 'client_won';
         }
     }
+    debug('Match state ' + room.game.state.msg);
 };
 
 gameServer.broadcastToPlayer = function(roomId, playerType) {
