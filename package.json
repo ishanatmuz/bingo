@@ -1,14 +1,14 @@
 {
-  "name": "tic-tac-toe",
+  "name": "Bingo",
   "version": "0.0.1",
-  "description": "A multiplayer html5 canvas based tic tac toe",
+  "description": "A multiplayer html5 canvas based Bingo game",
   "main": "server.js",
   "scripts": {
     "start": "DEBUG=bingo DEBUG_FD=3 node server.js 3>default.log",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "tic-tac-toe",
+    "bingo",
     "canvas",
     "html5",
     "multi-player"
