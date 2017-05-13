@@ -175,12 +175,12 @@ var Renderer = {
         data.ctx.font = '40px serif';
         data.ctx.fillStyle = color;
         // The number should not be clinging to the side
-        var xOffset = 10;
+        var xOffset = cellWidth / 5;
         if (number < 10) {
-            xOffset = 20;
+            xOffset = 60/(60/25);
         }
         // Draw the number
-        data.ctx.fillText('' + number, (y * cellWidth) + xOffset, ((x + 1) * cellWidth) - 15);
+        data.ctx.fillText(number, (y * cellWidth) + xOffset, ((x + 1) * cellWidth) - cellWidth / 3);
         // Reset style
         data.ctx.fillStyle = '#000000';
     },
