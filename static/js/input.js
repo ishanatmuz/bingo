@@ -1,6 +1,20 @@
 var Input = {
     init: function (data) {
         // Used to setup listeners for mouse, keyboard, gamepad etc..
+        // Copy to Clipboard
+        data.copyClipboard.addEventListener('click', function() {
+            // Select the room link
+            data.roomLinkUrl.select();
+            
+            // Copy to clipboard
+            try {
+                document.execCommand('copy');
+                data.copyClipboard.innerText = 'Copied';
+            } catch (err) {
+                window.prompt("Copy to clipboard: Ctrl+C, Enter", data.roomLinkUrl.value);
+            }
+        });
+        
         // Setup mouse click listener
         var self = this;
         data.canvas.addEventListener('click', function (event) {

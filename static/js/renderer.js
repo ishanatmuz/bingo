@@ -17,7 +17,7 @@ var Renderer = {
             if ((data.playerType === 'host' && data.state.client === 'unavailable') ||
                 (data.playerType === 'client' && data.state.host === 'unavailable')) {
                 if (data.roomLink.classList.contains('hide')) {
-                    data.roomLink.innerHTML = 'Room Link: <b>' + window.location.href + '</b><br/>' + 'Waiting for opponent to join...';
+                    data.roomLinkUrl.value = window.location.href;
                     data.roomLink.classList.remove('hide');
                 }
                 data.status.classList.add('hide');

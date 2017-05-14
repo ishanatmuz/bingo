@@ -140,6 +140,16 @@ canvas {
     color: #0000ef;
 }
 
+#copy-clipboard {
+    font-size: 25px;
+    padding: 5px;
+    margin-left: 5px;
+}
+
+#room-link-url {
+    font-size: 22px;
+}
+
 /* Overriding alertify dialog width */
 .alertify .dialog div{
     width: 700px;
