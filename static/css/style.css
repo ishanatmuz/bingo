@@ -136,6 +136,10 @@ canvas {
     margin: 5px;
 }
 
+.hightlight {
+    color: #0000ef;
+}
+
 /* Overriding alertify dialog width */
 .alertify .dialog div{
     width: 700px;
