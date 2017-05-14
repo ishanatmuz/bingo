@@ -40,4 +40,4 @@ Some other libraries such as underscore.js alertify.js and preload.js are also u
 `alertify.js` provides a nice and cocise way to display a dialog.
 `preload.js` lets you load resources in parallel and makes waiting for all the elements to finish loading easier, as you do not have to do reference counting etc.
 
-More details on the implementation can be found [here](implementation.md)
+More details on the implementation can be found [here](IMPLEMENTATION.md)
