@@ -12,6 +12,7 @@
     <body>
         <div id="support-icons">
             <img id="help-icon" class="support-icon" src="static/img/help-icon.png"/>
+            <img id="xpad-icon" class="support-icon" src="static/img/xpad-icon.png"/>
         </div>
         <div id="bingo-result" class="banner"></div>
         <canvas id="main-canvas" class="center hide" width="325" height="325"></canvas>
@@ -28,7 +29,7 @@
         <div id="result" class="center info hide"></div>
         <div class="credits">Music: <a href="http://www.bensound.com">Bensound</a></div>
 
-        <!-- Template for displaying help -->
+        <!-- Help Section -->
         <script type="text/html" id="helpTmpl">
             <div class="banner">BINGO</div>
             <div class="help-section">
@@ -44,6 +45,24 @@
                     <li>The line can be "Horizontal", "Vertical" or "Diagonal"</li>
                     <li>Everytime you get a score one character from the word "BINGO" appears on the screen.</li>
                     <li>The goal of course is to make the word "BINGO" appear before the opponent does the same.</li>
+                </ul>
+            </div>
+        </script>
+        <!-- x-Pad Section -->
+        <script type="text/html" id="xpadTmpl">
+            <div class="banner">
+                <img src="static/img/xpad-image.png" width="200"/>
+            </div>
+            <div class="help-section">
+                <h4>Gamepad Support</h4>
+                <p>You can play with Gamepad too.</p>
+                <p>This game is designed to work with only the "First" controller that's connected to your system.</p>
+                <p>Press any key on your gamepad to connect.</p>
+                <h4>Buttons</h5>
+                <ul>
+                    <li>D-Pad (Up/Down/Left/Right) : Move around.</li>
+                    <li>A / X : Select ("Cross-Out").</li>
+                    <li>Menu : Start / New Game</li>
                 </ul>
             </div>
         </script>

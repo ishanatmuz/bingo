@@ -6,6 +6,11 @@ var Help = {
 				// Displaying the help dialog
 				alertify.okBtn("Close").alert(_.template(document.getElementById('helpTmpl').innerHTML));
 			});
+			var xpadIcon = document.getElementById('xpad-icon');
+			xpadIcon.addEventListener('click', function() {
+				// Displayig the gamepad dialog
+				alertify.okBtn("Close").alert(_.template(document.getElementById('xpadTmpl').innerHTML));
+			});
 		}
 	}
 };

@@ -182,7 +182,9 @@ var Input = {
         
         // New game message
         if ((data.state.msg === 'host_won') || (data.state.msg === 'client_won') || ((data.state.msg === 'draw'))) {
-            GameSocket.requestNewGame(data);
+            if (buttonTypes[buttonIndex] === 'Menu') {
+                GameSocket.requestNewGame(data);
+            }
         }
     },
     
