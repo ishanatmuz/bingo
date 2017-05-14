@@ -44,5 +44,7 @@ More details on the implementation can be found [here](IMPLEMENTATION.md)
 
 ## How to start
 Clone this repo or download the source code.
+
 Install the libraries by running `npm install`
+
 Run the server by running `npm start`
