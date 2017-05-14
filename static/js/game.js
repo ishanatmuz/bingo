@@ -1,11 +1,11 @@
 var Game = {
     init: function() {
-        // Canvas
         this.data = {};
+        // Handles to the html elements
         this.data.bingoResult = document.getElementById('bingo-result');
         this.data.canvas = document.getElementById('main-canvas');
+        // Context for the canvas
         this.data.ctx = this.data.canvas.getContext('2d');
-        // Handler for other messages
         this.data.status = document.getElementById('status');
         this.data.roomLink = document.getElementById('room-link');
         this.data.start = document.getElementById('start');
@@ -45,6 +45,7 @@ var Game = {
             score: 0
         };
         
+        // Initialize everything
         GameSocket.init(this.data);
         Input.init(this.data);
         Renderer.init(this.data);
@@ -52,6 +53,7 @@ var Game = {
     },
     
     run: function(data) {
+        // Main game loop
         var gameLoop = function() {
             Game.input(data);
             Game.update(data);
@@ -97,4 +99,5 @@ var Game = {
         Renderer.update(data);
     }
 };
+// Initialize the game
 Game.init();

@@ -2,32 +2,37 @@
 process.env.DEBUG = 'bingo';
 process.env.DEBUG_FD = 3;
 
+// Imports
 var _ = require('underscore');
 const UUID = require('uuid/v4');
 var http = require('http');
 var expres = require('express');
-var app = expres();
-var server = http.Server(app);
 var io = require('socket.io');
 const debug = require('debug')('bingo');
+var gameServer = require('./game_server.js');
+
+var gameport = process.env.PORT || 8000;
+
+// Express app
+var app = expres();
+var server = http.Server(app);
 
 // Create a socket.io instance using our express server
 var sio = io.listen(server);
-var gameport = process.env.PORT || 8000;
 
+// Start the server
 server.listen(gameport);
-
-// console.log('Bingo game server listening on port ' + gameport);
 debug('Bingo game server listening on port ' + gameport);
 
+// Serve index.html
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
+// Serving files in the static folder
 app.use('/static', expres.static('static'));
 
-gameServer = require('./game_server.js');
-
+// New Socket.io connection
 sio.on('connection', function(client) {
     // Generate and allot a new UUID to client
     client.userid = UUID();
@@ -51,7 +56,7 @@ sio.on('connection', function(client) {
         gameServer.broadcastGame(roomId);
     });
     
-    // Send the player their information
+    // Send the player their id
     client.emit('onconnected', {
         id: client.userid
     });

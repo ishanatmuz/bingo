@@ -1,43 +1,18 @@
 var _ = require('underscore');
 const debug = require('debug')('bingo');
 
-var gameServer = module.exports = {};
-
+// Number of rows in the board
 var numRows = 5;
-var winningCombinations = [];
-
+var gameServer = module.exports = {};
 gameServer.rooms = [];
 
-var getRoom = function(roomId) {
-    // Find room
-    var room = _.find(gameServer.rooms, function(item) {
-        return item.id === roomId;
-    });
-    // If room doesn't exists create one
-    if (_.isUndefined(room)) {
-        gameServer.rooms.push({
-            id: roomId
-        });
-    };
-    // Find room again
-    room = _.find(gameServer.rooms, function(item) {
-        return item.id === roomId;
-    });
-    return room;
-}
-
-gameServer.joinRoom = function(roomId) {
-    var room = getRoom(roomId);
-    // Create game if it doesn't exists
-    if (!_.has(room, 'game')) {
-        room.game = {};
-        room.game.state = room.game.state || {};
-    }
-};
-
+// Generating winning combinations based on numRows
+var winningCombinations = [];
 var generateWinningCombinations = function() {
+    // Two diagonals
     var diagonal1 = [];
     var diagonal2 = [];
+    // Horizontal and Vertical lines
     for (var i = 0; i < numRows; i++) {
         var row = [];
         var col = [];
@@ -67,6 +42,34 @@ var generateWinningCombinations = function() {
     winningCombinations.push(diagonal2);
 };
 generateWinningCombinations();
+
+// Helper function to get the room from rooms list
+var getRoom = function(roomId) {
+    // Find room
+    var room = _.find(gameServer.rooms, function(item) {
+        return item.id === roomId;
+    });
+    // If room doesn't exists create one
+    if (_.isUndefined(room)) {
+        gameServer.rooms.push({
+            id: roomId
+        });
+    };
+    // Find room again
+    room = _.find(gameServer.rooms, function(item) {
+        return item.id === roomId;
+    });
+    return room;
+}
+
+gameServer.joinRoom = function(roomId) {
+    var room = getRoom(roomId);
+    // Create game if it doesn't exists
+    if (!_.has(room, 'game')) {
+        room.game = {};
+        room.game.state = room.game.state || {};
+    }
+};
 
 gameServer.insertClient = function(roomId, player) {
     debug('insertClient %O %O', roomId, player.type);
@@ -107,6 +110,7 @@ gameServer.removeClient = function(roomId, player) {
     }
 };
 
+// Helper function which generates the possible list of inputs / numbers
 var generatePossibleInputs = function() {
     var possibleInputs = [];
     for (var i = 1; i <= numRows * numRows; i++) {
@@ -115,31 +119,41 @@ var generatePossibleInputs = function() {
     return possibleInputs;
 };
 
+// Helper function to create a board with randomly filled numbers
 var createBoard = function() {
+    // List of all possible inputs / numbers
     var possibleInputs = generatePossibleInputs();
+    // Blank board
     var board = [];
     for (var i = 0; i < numRows; i++) {
         board.push([]);
         for (var j = 0; j < numRows; j++) {
+            // Insert a random nummber on the board
             board[i].push(possibleInputs[Math.floor(Math.random() * possibleInputs.length)]);
             var position = possibleInputs.indexOf(board[i][j]);
+            // Remove the inserted number from the list of possible inputs / numbers to avoid duplication
             possibleInputs.splice(position, 1);
         }
     }
     return board;
 };
 
+// Initialize all variables for the room
 gameServer.initializeGame = function(roomId) {
     var room = getRoom(roomId);
     
     room.game.numRows = numRows;
+    // List of all selections made by the players
     room.game.selections = [];
+    // Randomly generated board for the two players
     room.game.boards = {};
     room.game.boards.host = createBoard();
     room.game.boards.client = createBoard();
+    // Board blue print is the selections made by the two players
     room.game.boardBluePrint = {};
     room.game.boardBluePrint.host = [];
     room.game.boardBluePrint.client = [];
+    // State indicates the state in which game is, i.e. host_won, client_won, draw, waiting etc..
     room.game.state = {};
     room.game.state.msg = 'waiting';
     room.game.state.host = _.has(room.game, 'host') ? 'available' : 'unavailable';
@@ -148,6 +162,7 @@ gameServer.initializeGame = function(roomId) {
     room.game.clientScore = 0;
 };
 
+// Update the state if players wants to start the game
 gameServer.startGame = function(roomId, player) {
     debug('startGame %O %O', roomId, player.type);
     var room = getRoom(roomId);
@@ -166,11 +181,13 @@ gameServer.startGame = function(roomId, player) {
     }
 }
 
+// Update state to reflect the game has ended
 gameServer.endGame = function(roomId) {
     var room = getRoom(roomId);
     room.game.state.msg = 'end';
 };
 
+// Process a selection made by the player
 gameServer.playerInput = function(roomId, player, inputNumber) {
     debug('Player input %O %O', roomId, player.type);
     var room = getRoom(roomId);
@@ -220,9 +237,11 @@ gameServer.playerInput = function(roomId, player, inputNumber) {
     }
 };
 
+// Helper function to check the result of the game
 gameServer.checkResult = function(roomId) {
     var room = getRoom(roomId);
     
+    // Helper function to check if all the needles exist in the haystack
     var containsAll = function(needles, haystack){ 
         var results = 0;
         for(var i = 0 , len = needles.length; i < len; i++){
@@ -278,6 +297,7 @@ gameServer.checkResult = function(roomId) {
     debug('Match state %O', room.game.state.msg);
 };
 
+// Send the game state to the player
 gameServer.broadcastToPlayer = function(roomId, playerType) {
     var room = getRoom(roomId);
     
@@ -312,6 +332,7 @@ gameServer.broadcastToPlayer = function(roomId, playerType) {
     }
 };
 
+// Send the game state to both the connected players
 gameServer.broadcastGame = function(roomId) {
     var room = getRoom(roomId);
     debug('broadcasting game to players %O', roomId);
