@@ -4,11 +4,15 @@
 ### Server
 Server is divided mainly into two parts
 `server.js` and `game_server.js`
+
 This keeps most of the game specific logic separate from the `server.js` file.
 #### server.js
 Serves the `index.html` and `static` files.
+
 Connects to the player and allocates an id to the player.
+
 Takes some actions like removing / inserting client, assigning a room.
+
 Forward all the client messages to the actual game server `game_server.js`.
 #### game_server.js
 Initializes the winnig combinations based on number of rows.
@@ -19,6 +23,7 @@ Handles room creation, board creation, player inputs, result calculation and bro
 
 ### Client
 The client has only one html file `index.html` which contains the main canvas (`#main-canvas`) for the game board.
+
 All the states are showng by hiding and displaying the div elements except for the 'Waiting' state which is drawn directly over the canvas.
 
 Game is started with `Game.init()`.
@@ -27,7 +32,9 @@ Help section is initiated and handled using `help.js`.
 Javascript files used are:
 #### game.js
 Loads the resources
+
 Initializes `GameSocket`, `Input`, `Renderer`
+
 Runs the main game loop to update the game, check for inputs and re-render the game.
 `GameSocket`, `Input` and `Renderer` are separated out in an attempt to modularize the code.
 
@@ -42,7 +49,9 @@ Sends the requests for "starting a game", "starting a new game" and "sending the
 
 #### input.js
 Initializes the click listener on the canvas as well as the click listener for the "start game" / "new game" buttons.
+
 Initializes all the gamepad buttons pressed state as false.
+
 Initilizes the mousemove event and updates the currently selected cell.
 Handles the gamepad input by long polling to check the pressed buttons.
 
@@ -58,11 +67,17 @@ During the game "Waiting" is rendered directly on canvas while waiting for other
 
 Canvas is rendered with each frame.
 Canvas rendering has these parts:
+
 `drawGrid` Draw the grid over the canvas.
+
 `drawNumber` This draws the number on a specific cell. This is called for each cell with a color to represent whether this is an unselected cell or a user selected one.
+
 `drawCross` This draws the cross over any specific cell.
+
 `drawCellBorder` This draws the cell border of the currently selected cell in a different color so that user can see which cell is selected.
+
 `drawWaiting` This draws a "Waiting" message over the canvas.
+
 `drawCanvas` This calls the above mentioned functions to draw the canvas based on the grid, selected numbers and the currently selected cell.
 
 #### help.js

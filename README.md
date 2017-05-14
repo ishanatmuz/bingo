@@ -37,7 +37,9 @@ The game board is created using HTML 5 Canvas.
 
 Some other libraries such as underscore.js alertify.js and preload.js are also used to make the life easier.
 `underscore.js` provides utility functions to handle lists or arrays, makes templating easier.
+
 `alertify.js` provides a nice and cocise way to display a dialog.
+
 `preload.js` lets you load resources in parallel and makes waiting for all the elements to finish loading easier, as you do not have to do reference counting etc.
 
 More details on the implementation can be found [here](IMPLEMENTATION.md)
