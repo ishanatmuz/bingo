@@ -11,8 +11,8 @@
     </head>
     <body>
         <div id="support-icons">
-            <img id="help-icon" class="support-icon" src="static/img/help-icon.png"/>
             <img id="xpad-icon" class="support-icon" src="static/img/xpad-icon.png"/>
+            <img id="help-icon" class="support-icon" src="static/img/help-icon.png"/>
         </div>
         <div id="bingo-result" class="banner"></div>
         <canvas id="main-canvas" class="center hide" width="325" height="325"></canvas>
@@ -60,10 +60,14 @@
                 <p>Press any key on your gamepad to connect.</p>
                 <h4>Buttons</h5>
                 <ul>
-                    <li>D-Pad (Up/Down/Left/Right) : Move around.</li>
-                    <li>A / X : Select ("Cross-Out").</li>
-                    <li>Menu : Start / New Game</li>
+                    <li>D-Pad Up    : Move Up.</li>
+                    <li>D-Pad Down  : Move Down.</li>
+                    <li>D-Pad Left  : Move Left.</li>
+                    <li>D-Pad Right : Move Right.</li>
+                    <li>A / X       : Select ("Cross-Out").</li>
+                    <li>Menu        : Start / New Game</li>
                 </ul>
+                <h4>Test Gamepad : <span id="xpad-selected-input">Press any of the above mentioned buttons.</span></h5>
             </div>
         </script>
 
