@@ -1,4 +1,8 @@
-html,
+@font-face {
+    font-family: "PermanentMarker";
+    src:url("../fonts/PermanentMarker.ttf");
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -55,9 +59,18 @@ canvas {
 }
 
 .info span {
-    background: #417cb8;
     padding: 10px;
-    color: #c9c8c8;
+    opacity: 0.85;
+    font-size: 62px;
+    text-shadow: 2px 2px 2px black;
+}
+
+.won {
+    color: #2fcc36;
+}
+
+.lost {
+    color: #CC0000;
 }
 
 .info button {
@@ -67,6 +80,7 @@ canvas {
     color: #c9c8c8;
     padding: 10px;
     font-size: 30px;
+    border-radius: 30px;
 }
 
 .info button:hover {
@@ -80,11 +94,13 @@ canvas {
 }
 
 #bingo-result {
-    color: #c90b31;
+    color: #FFD800;
     text-align: center;
-    font-size: 44px;
+    font-size: 65px;
     margin-top: 10px;
     letter-spacing: 25px;
+    font-family: 'PermanentMarker', cursive;
+    text-shadow: 6px 7px 8px black;
 }
 
 .hide {

@@ -79,9 +79,17 @@ var Renderer = {
             this.drawCanvas(data);
             data.canvas.classList.remove('hide');
             if (data.playerType === 'host') {
+                if (data.result.classList.contains('lost')) {
+                    data.result.classList.remove('lost');
+                }
+                data.result.classList.add('won');
                 data.resultMsg.innerText = 'You Won';
             }
             if (data.playerType === 'client') {
+                if (data.result.classList.contains('win')) {
+                    data.result.classList.remove('win');
+                }
+                data.result.classList.add('lost');
                 data.resultMsg.innerText = 'You Lost';
             }
             data.result.classList.remove('hide');
@@ -95,9 +103,17 @@ var Renderer = {
             this.drawCanvas(data);
             data.canvas.classList.remove('hide');
             if (data.playerType === 'client') {
+                if (data.result.classList.contains('lost')) {
+                    data.result.classList.remove('lost');
+                }
+                data.result.classList.add('won');
                 data.resultMsg.innerText = 'You Won';
             }
             if (data.playerType === 'host') {
+                if (data.result.classList.contains('win')) {
+                    data.result.classList.remove('win');
+                }
+                data.result.classList.add('lost');
                 data.resultMsg.innerText = 'You Lost';
             }
             data.result.classList.remove('hide');
