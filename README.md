@@ -41,3 +41,8 @@ Some other libraries such as underscore.js alertify.js and preload.js are also u
 `preload.js` lets you load resources in parallel and makes waiting for all the elements to finish loading easier, as you do not have to do reference counting etc.
 
 More details on the implementation can be found [here](IMPLEMENTATION.md)
+
+## How to start
+Clone this repo or download the source code.
+Install the libraries by running `npm install`
+Run the server by running `npm start`
