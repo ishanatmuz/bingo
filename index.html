@@ -6,7 +6,7 @@
         <link href="static/css/style.css" rel="stylesheet" />
         
         <script src="static/js/preloadjs-0.6.2.min.js"></script>
-        <script src="static/js/underscore.js"></script>
+        <script src="static/js/underscore-min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
     </head>
     <body>
@@ -24,9 +24,21 @@
         </div>
         <div id="result" class="center info hide"></div>
         <div class="credits">Music: <a href="http://www.bensound.com">Bensound</a></div>
+
+        <!-- Template for displaying help -->
+        <script type="text/html" id="helpTmpl">
+            <img src='https://placehold.it/256x128'>
+            <h3>This is HTML</h3>
+            <p>It's great, right?</p>
+            <p id="testElement"></p>
+            <% Help.log('printing from template'); %>
+        </script>
+
+        <script type="text/javascript" src="static/js/alertify.js"></script>
         <script type="text/javascript" src="static/js/gamesocket.js"></script>
         <script type="text/javascript" src="static/js/input.js"></script>
         <script type="text/javascript" src="static/js/renderer.js"></script>
         <script type="text/javascript" src="static/js/game.js"></script>
+        <script type="text/javascript" src="static/js/help.js"></script>
     </body>
 </html>
