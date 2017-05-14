@@ -80,6 +80,7 @@ var Input = {
                 }
                 if (data.gamepad.gamepad.buttons[i].pressed === false && data.gamepad.buttons[i] === true) {
                     data.gamepad.buttons[i] = false;
+                    // Process gamepad input
                     this.gamepadInput(data, i);
                 }
             }
@@ -124,6 +125,9 @@ var Input = {
         var buttonTypes = ['A', 'B', 'X', 'Y', 'Left Bummper', 'Right Bumper', 'Left Trigger', 'Right Trigger',
                                    'View', 'Menu', 'Left Stick', 'Right Stick', 'D-Up', 'D-Down', 'D-Left', 'D-Right'];
         console.log('xPad - ' + buttonTypes[buttonIndex]);
+        // Process gamepad input for help section
+        Help.displayXpadInput(buttonTypes[buttonIndex]);
+
         // If this is the player's turn then poll for xpad input
         if (((data.playerType === 'host') && (data.state.msg === 'host_turn')) ||
                 ((data.playerType === 'client') && (data.state.msg === 'client_turn'))) {
@@ -182,7 +186,9 @@ var Input = {
         
         // New game message
         if ((data.state.msg === 'host_won') || (data.state.msg === 'client_won') || ((data.state.msg === 'draw'))) {
-            GameSocket.requestNewGame(data);
+            if (buttonTypes[buttonIndex] === 'Menu') {
+                GameSocket.requestNewGame(data);
+            }
         }
     },
     

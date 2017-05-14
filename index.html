@@ -6,11 +6,15 @@
         <link href="static/css/style.css" rel="stylesheet" />
         
         <script src="static/js/preloadjs-0.6.2.min.js"></script>
-        <script src="static/js/underscore.js"></script>
+        <script src="static/js/underscore-min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
     </head>
     <body>
-        <div id="bingo-result"></div>
+        <div id="support-icons">
+            <img id="xpad-icon" class="support-icon" src="static/img/xpad-icon.png"/>
+            <img id="help-icon" class="support-icon" src="static/img/help-icon.png"/>
+        </div>
+        <div id="bingo-result" class="banner"></div>
         <canvas id="main-canvas" class="center hide" width="325" height="325"></canvas>
         <div id="status" class="center info">Loading...</div>
         <div id="room-link" class="center info hide"></div>
@@ -24,9 +28,55 @@
         </div>
         <div id="result" class="center info hide"></div>
         <div class="credits">Music: <a href="http://www.bensound.com">Bensound</a></div>
+
+        <!-- Help Section -->
+        <script type="text/html" id="helpTmpl">
+            <div class="banner">BINGO</div>
+            <div class="help-section">
+                <h4>What is this game?</h4>
+                <p>This is a board game, where you play against an opponent. The goal is to complete 5 lines (Horizontal, Vertical or Diagonal) before the opponent does.</p>
+            </div>
+            <div class="help-section">
+                <h4>Rules</h4>
+                <ul>
+                    <li>Both players are given a randomly generated board filled with numbers 1-25.</li>
+                    <li>When you "Cross-Out" a number. The number get's "Crossed-Out" from the opponent's board too.</li>
+                    <li>When all elements of a line has been "Crossed-Out", you score a point.</li>
+                    <li>The line(s) can be "Horizontal", "Vertical" or "Diagonal"</li>
+                    <li>Everytime you get a score one character from the word "BINGO" appears on the screen.</li>
+                    <li>The goal of course is to make the word "BINGO" appear before the opponent does the same.</li>
+                    <li>To make a selection; you can either click, or use a gamepad if you have any nearby.</li>
+                </ul>
+            </div>
+        </script>
+        <!-- x-Pad Section -->
+        <script type="text/html" id="xpadTmpl">
+            <div class="banner">
+                <img src="static/img/xpad-image.png" width="200"/>
+            </div>
+            <div class="help-section">
+                <h4>Gamepad Support</h4>
+                <p>You can play with Gamepad too.</p>
+                <p>This game is designed to work with only the "First" controller that's connected to your system.</p>
+                <h4>Buttons</h5>
+                <ul>
+                    <li>D-Pad Up    : Move Up.</li>
+                    <li>D-Pad Down  : Move Down.</li>
+                    <li>D-Pad Left  : Move Left.</li>
+                    <li>D-Pad Right : Move Right.</li>
+                    <li>A / X       : Select ("Cross-Out").</li>
+                    <li>Menu        : Start / New Game</li>
+                </ul>
+                <p class="hightlight"><span>Test Gamepad</span> : <span id="xpad-selected-input">Press any of the above mentioned buttons.</span></p>
+                <p>NOTE: Press any key on your gamepad to connect.</p>
+            </div>
+        </script>
+
+        <script type="text/javascript" src="static/js/alertify.js"></script>
         <script type="text/javascript" src="static/js/gamesocket.js"></script>
         <script type="text/javascript" src="static/js/input.js"></script>
         <script type="text/javascript" src="static/js/renderer.js"></script>
         <script type="text/javascript" src="static/js/game.js"></script>
+        <script type="text/javascript" src="static/js/help.js"></script>
     </body>
 </html>
