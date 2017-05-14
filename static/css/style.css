@@ -81,6 +81,7 @@ canvas {
     padding: 10px;
     font-size: 30px;
     border-radius: 30px;
+    cursor: pointer;
 }
 
 .info button:hover {
