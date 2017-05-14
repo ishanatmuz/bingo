@@ -94,7 +94,7 @@ canvas {
     text-shadow: -1px 1px #193047;
 }
 
-#bingo-result {
+.banner {
     color: #FFD800;
     text-align: center;
     font-size: 65px;
@@ -112,4 +112,31 @@ canvas {
     position: fixed;
     bottom: 0;
     right: 0;
+}
+
+/* Help section */
+.help-section {
+    text-align: left;
+}
+
+#support-icons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+#support-icons img {
+    width: 40px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.support-icon {
+    margin: 5px;
+}
+
+/* Overriding alertify dialog width */
+.alertify .dialog div{
+    width: 700px;
 }

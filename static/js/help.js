@@ -1,12 +1,12 @@
 var Help = {
 	init: function() {
-		alertify.alert(_.template(document.getElementById('helpTmpl').innerHTML));
-		var testElement = document.getElementById('testElement');
-		testElement.innerText = 'Injecting text in a dialog template';
-	},
-
-	log: function(msg) {
-		console.log(msg);
+		window.onload = function() {
+			var helpIcon = document.getElementById('help-icon');
+			helpIcon.addEventListener('click', function() {
+				// Displaying the help dialog
+				alertify.okBtn("Close").alert(_.template(document.getElementById('helpTmpl').innerHTML));
+			});
+		}
 	}
 };
 

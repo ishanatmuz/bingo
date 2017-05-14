@@ -10,7 +10,10 @@
         <script src="/socket.io/socket.io.js"></script>
     </head>
     <body>
-        <div id="bingo-result"></div>
+        <div id="support-icons">
+            <img id="help-icon" class="support-icon" src="static/img/help-icon.png"/>
+        </div>
+        <div id="bingo-result" class="banner"></div>
         <canvas id="main-canvas" class="center hide" width="325" height="325"></canvas>
         <div id="status" class="center info">Loading...</div>
         <div id="room-link" class="center info hide"></div>
@@ -27,11 +30,22 @@
 
         <!-- Template for displaying help -->
         <script type="text/html" id="helpTmpl">
-            <img src='https://placehold.it/256x128'>
-            <h3>This is HTML</h3>
-            <p>It's great, right?</p>
-            <p id="testElement"></p>
-            <% Help.log('printing from template'); %>
+            <div class="banner">BINGO</div>
+            <div class="help-section">
+                <h4>What is this game?</h4>
+                <p>This is a board game, where you play against an opponent. The goal is to complete 5 lines (Horizontal, Vertical or Diagonal) before the opponent does.</p>
+            </div>
+            <div class="help-section">
+                <h4>Rules</h4>
+                <ul>
+                    <li>Both players are given a randomly generated board filled with numbers 1-25</li>
+                    <li>When you "Cross-Out" a number. The number get's "Crossed-Out" from the opponent's board too.</li>
+                    <li>When all elements of a line has been "Crossed-Out", you get a score.</li>
+                    <li>The line can be "Horizontal", "Vertical" or "Diagonal"</li>
+                    <li>Everytime you get a score one character from the word "BINGO" appears on the screen.</li>
+                    <li>The goal of course is to make the word "BINGO" appear before the opponent does the same.</li>
+                </ul>
+            </div>
         </script>
 
         <script type="text/javascript" src="static/js/alertify.js"></script>
