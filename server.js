@@ -1,14 +1,20 @@
-// Setting environment variable
-process.env.DEBUG = 'bingo';
-process.env.DEBUG_FD = 3;
-
 // Imports
 var _ = require('underscore');
 const UUID = require('uuid/v4');
 var http = require('http');
 var expres = require('express');
 var io = require('socket.io');
-const debug = require('debug')('bingo');
+winston = require('winston');
+
+// Configuring winston
+winston.configure({
+    transports: [
+        new (winston.transports.Console)(),
+        new (winston.transports.File)({ filename: 'default.log' })
+    ]
+});
+winston.level = 'debug';
+
 var gameServer = require('./game_server.js');
 
 var gameport = process.env.PORT || 8000;
@@ -22,7 +28,7 @@ var sio = io.listen(server);
 
 // Start the server
 server.listen(gameport);
-debug('Bingo game server listening on port ' + gameport);
+winston.log('debug', 'Bingo game server listening on port ' + gameport);
 
 // Serve index.html
 app.get('/', function(req, res) {
