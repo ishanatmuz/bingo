@@ -17,7 +17,7 @@ winston.level = 'debug';
 
 var gameServer = require('./game_server.js');
 
-var gameport = process.env.PORT || 8000;
+var gameport = process.env.PORT || 8001;
 
 // Express app
 var app = expres();
