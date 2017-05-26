@@ -239,8 +239,21 @@ var Renderer = {
         var x = position.y;
         var y = position.x;
         
-        // set style
-        data.ctx.strokeStyle = '#0099CC';
+        // Create gradient
+        var speed = 0.010;
+        var grad = data.ctx.createLinearGradient(0, 0, canvasWidth, canvasWidth);
+        var redStop = (data.animationFrame * speed + 0) % 1;
+        var blueStop = (data.animationFrame * speed + 0.33) % 1;
+        var greenStop = (data.animationFrame * speed + 0.66) % 1;
+        var yellowStop = (data.animationFrame * speed + 1) % 1;
+        grad.addColorStop(redStop, "red");
+        grad.addColorStop(blueStop, "blue");
+        grad.addColorStop(greenStop, "green");
+        grad.addColorStop(yellowStop, "yellow");
+        
+        // Set style
+//        data.ctx.strokeStyle = '#0099CC';
+        data.ctx.strokeStyle = grad;
         data.ctx.lineWidth = 4;
         
         data.ctx.beginPath();
@@ -249,6 +262,7 @@ var Renderer = {
         data.ctx.lineTo(cellWidth * (y + 1), cellWidth * (x + 1));
         data.ctx.lineTo(cellWidth * (y + 1), cellWidth * x);
         data.ctx.lineTo(cellWidth * y, cellWidth * x);
+        data.ctx.closePath();
         data.ctx.stroke();
         
         // Re-setting style
