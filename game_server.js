@@ -1,5 +1,4 @@
 var _ = require('underscore');
-const debug = require('debug')('bingo');
 
 // Number of rows in the board
 var numRows = 5;
@@ -72,7 +71,7 @@ gameServer.joinRoom = function(roomId) {
 };
 
 gameServer.insertClient = function(roomId, player) {
-    debug('insertClient %O %O', roomId, player.type);
+    winston.log('debug', 'insertClient ' + roomId + ' ' + player.type);
     var room = getRoom(roomId);
     var game = room.game;
     if (!_.has(game, 'host')) {
@@ -96,7 +95,7 @@ gameServer.insertClient = function(roomId, player) {
 };
 
 gameServer.removeClient = function(roomId, player) {
-    debug('removeClient %O %O', roomId, player.type);
+    winston.log('debug', 'removeClient ' + roomId + ' ' + player.type);
     if (player.type === null) {
         return;
     }
@@ -164,7 +163,7 @@ gameServer.initializeGame = function(roomId) {
 
 // Update the state if players wants to start the game
 gameServer.startGame = function(roomId, player) {
-    debug('startGame %O %O', roomId, player.type);
+    winston.log('debug', 'startGame ' + roomId + ' ' + player.type);
     var room = getRoom(roomId);
     // Setting player state as started
     if (player.type === 'host') {
@@ -189,7 +188,7 @@ gameServer.endGame = function(roomId) {
 
 // Process a selection made by the player
 gameServer.playerInput = function(roomId, player, inputNumber) {
-    debug('Player input %O %O', roomId, player.type);
+    winston.log('debug', 'Player input ' + roomId + ' ' + player.type);
     var room = getRoom(roomId);
     // Check if input is valid
     if ((inputNumber > 0) && (inputNumber <= numRows * numRows)) {
@@ -263,12 +262,14 @@ gameServer.checkResult = function(roomId) {
             hostScore += 1;
         }
     });
-    hostWin = hostScore === numRows;
+    hostWin = hostScore >= numRows;
     room.game.hostScore =  hostScore;
-    debug('HostWin %O', hostWin);
-    debug('HostScore %O', hostScore);
-    debug('Host board %O', room.game.boards.host);
-    debug('Host board blueprint %O', room.game.boardBluePrint.host);
+    winston.log('debug', 'HostWin ' + hostWin);
+    winston.log('debug', 'HostScore ' + hostScore);
+    winston.log('debug', 'Host board :' + room.game.boards.host);
+    winston.log('debug', room.game.boards.host);
+    winston.log('debug', 'Host board blueprint ' + room.game.boardBluePrint.host);
+    winston.log('debug', room.game.boardBluePrint.host);
 
     // Check for client win
     var clientScore = 0;
@@ -277,12 +278,14 @@ gameServer.checkResult = function(roomId) {
             clientScore += 1;
         }
     });
-    clientWin = clientScore === numRows;
+    clientWin = clientScore >= numRows;
     room.game.clientScore = clientScore;
-    debug('ClientWin %O', clientWin);
-    debug('clientScore %O', clientScore);
-    debug('Client board %O', room.game.boards.client);
-    debug('Client board blueprint %O', room.game.boardBluePrint.client);
+    winston.log('debug', 'ClientWin ' + clientWin);
+    winston.log('debug', 'clientScore ' + clientScore);
+    winston.log('debug', 'Client board :');
+    winston.log('debug', room.game.boards.client);
+    winston.log('debug', 'Client board blueprint :');
+    winston.log('debug',  room.game.boardBluePrint.client)
     
     // If both completed at the same time game is draw
     if (hostWin === true && clientWin === true) {
@@ -294,7 +297,7 @@ gameServer.checkResult = function(roomId) {
             room.game.state.msg = 'client_won';
         }
     }
-    debug('Match state %O', room.game.state.msg);
+    winston.log('debug', 'Match state ' + room.game.state.msg);
 };
 
 // Send the game state to the player
@@ -335,7 +338,7 @@ gameServer.broadcastToPlayer = function(roomId, playerType) {
 // Send the game state to both the connected players
 gameServer.broadcastGame = function(roomId) {
     var room = getRoom(roomId);
-    debug('broadcasting game to players %O', roomId);
+    winston.log('debug', 'broadcasting game to players ' + roomId);
     
     // Check result
     gameServer.checkResult(roomId);
