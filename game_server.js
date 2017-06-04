@@ -262,7 +262,7 @@ gameServer.checkResult = function(roomId) {
             hostScore += 1;
         }
     });
-    hostWin = hostScore === numRows;
+    hostWin = hostScore >= numRows;
     room.game.hostScore =  hostScore;
     winston.log('debug', 'HostWin ' + hostWin);
     winston.log('debug', 'HostScore ' + hostScore);
@@ -278,7 +278,7 @@ gameServer.checkResult = function(roomId) {
             clientScore += 1;
         }
     });
-    clientWin = clientScore === numRows;
+    clientWin = clientScore >= numRows;
     room.game.clientScore = clientScore;
     winston.log('debug', 'ClientWin ' + clientWin);
     winston.log('debug', 'clientScore ' + clientScore);
