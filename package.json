@@ -1,7 +1,10 @@
 {
-  "name": "Bingo",
+  "name": "bingo",
   "version": "0.0.1",
-  "description": "A multiplayer html5 canvas based Bingo game",
+  "description": "A multi-player html5 canvas based Bingo game",
+  "engines": {
+    "node": "11.x"
+  },
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

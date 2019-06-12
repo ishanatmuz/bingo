@@ -1,9 +1,9 @@
 // Imports
-var _ = require('underscore');
+const _ = require('underscore');
 const UUID = require('uuid/v4');
-var http = require('http');
-var expres = require('express');
-var io = require('socket.io');
+const http = require('http');
+const express = require('express');
+const io = require('socket.io');
 winston = require('winston');
 
 // Configuring winston
@@ -15,16 +15,16 @@ winston.configure({
 });
 winston.level = 'debug';
 
-var gameServer = require('./game_server.js');
+const gameServer = require('./game_server.js');
 
-var gameport = process.env.PORT || 8001;
+const gameport = process.env.PORT || 8001;
 
 // Express app
-var app = expres();
-var server = http.Server(app);
+const app = express();
+const server = http.Server(app);
 
 // Create a socket.io instance using our express server
-var sio = io.listen(server);
+const sio = io.listen(server);
 
 // Start the server
 server.listen(gameport);
@@ -36,7 +36,7 @@ app.get('/', function(req, res) {
 });
 
 // Serving files in the static folder
-app.use('/static', expres.static('static'));
+app.use('/static', express.static('static'));
 
 // New Socket.io connection
 sio.on('connection', function(client) {
@@ -52,7 +52,7 @@ sio.on('connection', function(client) {
         client.roomId = roomId;
         
         // Insert the player
-        var result = gameServer.insertClient(roomId, client);
+        const result = gameServer.insertClient(roomId, client);
         client.type = result.type;
         
         // Initialize the game
